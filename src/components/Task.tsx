@@ -22,8 +22,6 @@ export const Task = React.memo(
     todolistId,
   }: TaskPropsType) => {
 
-    console.log("Task");
-
     const onRemoveHendler = useCallback(
       () => removeTask(task.id, todolistId),
       [task.id, todolistId]

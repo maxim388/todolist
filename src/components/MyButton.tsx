@@ -10,9 +10,6 @@ export type ButtonPropsType = {
 };
 
 export function MyButton(props: ButtonPropsType) {
-  // debugger;
-
-  console.log("MyButton");
 
   const onAllClickHandler = () => props.changeFilter(props.title, props.id);
 
