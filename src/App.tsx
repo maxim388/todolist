@@ -13,8 +13,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 
-
-
 export type FilterValuesType = "All" | "Active" | "Completed";
 export type TodolistType = {
   id: string;
