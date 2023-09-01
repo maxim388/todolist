@@ -40,7 +40,6 @@ export const tasksReducer = (
   state: TodolistOfTasksType = initialState,
   action: ActionsType
 ): TodolistOfTasksType => {
-  // debugger;
   switch (action.type) {
     case REMOVE_TASK:
       return {

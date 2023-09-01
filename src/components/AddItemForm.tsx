@@ -1,12 +1,13 @@
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, memo, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 
 export type AddItemFormPropsType = {
   addItem: (title: string) => void;
 };
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+
+export const AddItemForm = memo((props: AddItemFormPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
 

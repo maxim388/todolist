@@ -1,8 +1,5 @@
-import React, { useReducer, useState } from "react";
 import "./App.css";
-import { 
-  Todolist,
-   TodolistWithRedux } from "./components/TodoList";
+import { Todolist } from "./components/TodoList";
 import { useCallback } from "react";
 import { AddItemForm } from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
@@ -14,20 +11,8 @@ import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  addTodolistAC,
-  changeTodolistFilterAC,
-  changeTodolistTitleAC,
-  removeTodolistAC,
-  todolistsReducer,
-} from "./reducers/todolists-reducer";
-import {
-  addTaskAC,
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskAC,
-  tasksReducer,
-} from "./reducers/tasks-reducer";
+import { addTodolistAC } from "./reducers/todolists-reducer";
+import { addTaskAC } from "./reducers/tasks-reducer";
 import { useDispatch } from "react-redux";
 import { AppRootStateType } from "./store/store";
 import { useSelector } from "react-redux";
@@ -49,8 +34,6 @@ export type TodolistOfTasksType = {
 };
 
 export function AppWithRedux() {
-  console.log("AppWithRedux");
-
   const dispatch = useDispatch();
   const todolists = useSelector<AppRootStateType, TodolistType[]>(
     (state) => state.todolists
@@ -94,39 +77,10 @@ export function AppWithRedux() {
               return (
                 <Grid item>
                   <Paper style={{ padding: "10px" }}>
-                    {/* <Todolist
-                      key={tl.id}
-                      id={tl.id}
-                      title={tl.title}
-                      tasks={tasks[tl.id]}
-                      arrTitleFilter={arrTitleFilter}
-                      filter={tl.filter}
-                      removeTask={removeTask}
-                      addTask={addTask}
-                      changeFilter={changeFilter}
-                      changeTaskStatus={changeTaskStatus}
-                      changeTaskTitle={changeTaskTitle}
-                      removeTodolist={removeTodolist}
-                      changeTodolistTitle={changeTodolistTitle}
-                    /> */}
-
-                    <TodolistWithRedux
+                    <Todolist
                       key={tl.id}
                       todolist={tl}
-                      // id={tl.id}
-                      // title={tl.title}
-                      // tasks={tasks[tl.id]}
-                      // filter={tl.filter}
-
-
                       arrTitleFilter={arrTitleFilter}
-                      // removeTask={removeTask}
-                      // addTask={addTask}
-                      // changeFilter={changeFilter}
-                      // changeTaskStatus={changeTaskStatus}
-                      // changeTaskTitle={changeTaskTitle}
-                      // removeTodolist={removeTodolist}
-                      // changeTodolistTitle={changeTodolistTitle}
                     />
                   </Paper>
                 </Grid>
