@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { memo, useCallback } from "react";
 import { FilterValuesType, TaskType, TodolistType } from "../AppWithRedux";
 import { MyButton } from "./MyButton";
 import { AddItemForm } from "./AddItemForm";
@@ -26,7 +26,7 @@ export type TodolistPropsType = {
   arrTitleFilter: Array<FilterValuesType>;
 };
 
-export const Todolist = React.memo(
+export const Todolist = memo(
   ({ todolist, arrTitleFilter }: TodolistPropsType) => {
     const dispatch = useDispatch();
     const tasks = useSelector<AppRootStateType, TaskType[]>(

@@ -1,4 +1,4 @@
-import React, { useCallback, ChangeEvent } from "react";
+import React, { useCallback, ChangeEvent, memo } from "react";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,7 +13,7 @@ export type TaskPropsType = {
   changeTaskTitle: (task: string, newTitle: string, todolistId: string) => void;
 };
 
-export const Task = React.memo(
+export const Task = memo(
   ({
     removeTask,
     changeTaskStatus,
@@ -21,10 +21,9 @@ export const Task = React.memo(
     task,
     todolistId,
   }: TaskPropsType) => {
-
     const onRemoveHendler = useCallback(
       () => removeTask(task.id, todolistId),
-      [task.id, todolistId]
+      [removeTask, task.id, todolistId]
     );
 
     const onChangeStatusHandler = useCallback(
