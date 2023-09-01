@@ -1,9 +1,9 @@
 import React, { useCallback, ChangeEvent } from "react";
-import { TaskType } from "../App";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
+import { TaskType } from "../AppWithRedux";
 
 export type TaskPropsType = {
   todolistId: string;
