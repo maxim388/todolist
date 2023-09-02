@@ -1,5 +1,5 @@
 import { Button, IconButton } from "@mui/material";
-import { FilterValuesType } from "../AppWithRedux";
+import { FilterValuesType } from "../../App";
 
 export type ButtonPropsType = {
   id: string;

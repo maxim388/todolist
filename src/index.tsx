@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { AppWithRedux } from "./AppWithRedux";
+import { App } from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 
@@ -10,6 +10,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <AppWithRedux />
-   </Provider>
+    <App />
+  </Provider>
 );

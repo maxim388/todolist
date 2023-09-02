@@ -1,25 +1,25 @@
 import React, { memo, useCallback } from "react";
-import { FilterValuesType, TaskType, TodolistType } from "../AppWithRedux";
-import { MyButton } from "./MyButton";
-import { AddItemForm } from "./AddItemForm";
-import { EditableSpan } from "./EditableSpan";
+import { FilterValuesType, TaskType, TodolistType } from "../../App";
+import { MyButton } from "../MyButton/MyButton";
+import { EditableSpan } from "../EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import { Delete } from "@mui/icons-material";
-import { Task } from "./Task";
+import { Task } from "./Task/Task";
 import { useSelector } from "react-redux";
-import { AppRootStateType } from "../store/store";
+import { AppRootStateType } from "../../store/store";
 import { useDispatch } from "react-redux";
 import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
-} from "../reducers/todolists-reducer";
+} from "../../reducers/todolists-reducer";
 import {
   addTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-} from "../reducers/tasks-reducer";
+} from "../../reducers/tasks-reducer";
+import { AddItemForm } from "../AddItemForm/AddItemForm";
 
 export type TodolistPropsType = {
   todolist: TodolistType;
@@ -44,23 +44,26 @@ export const Todolist = memo(
       [dispatch, todolist.id]
     );
 
-    const addTask = useCallback(() => {
-      dispatch(addTaskAC(todolist.title, todolist.id));
-    }, [dispatch, todolist.title, todolist.id]);
-
-    const removeTask = useCallback(
-      (taskId: string, todolistId: string) => {
-        dispatch(removeTaskAC(taskId, todolistId));
+    const addTask = useCallback(
+      (taskTitle: string) => {
+        dispatch(addTaskAC(taskTitle, todolist.id));
       },
-      [dispatch]
+      [dispatch, todolist.id]
     );
 
-    const changeTaskStatus = useCallback(
-      (taskId: string, isDone: boolean, todolistId: string) => {
-        dispatch(changeTaskStatusAC(taskId, isDone, todolistId));
-      },
-      [dispatch]
-    );
+    // const removeTask = useCallback(
+    //   (taskId: string, todolistId: string) => {
+    //     dispatch(removeTaskAC(taskId, todolistId));
+    //   },
+    //   [dispatch]
+    // );
+
+    // const changeTaskStatus = useCallback(
+    //   (taskId: string, isDone: boolean, todolistId: string) => {
+    //     dispatch(changeTaskStatusAC(taskId, isDone, todolistId));
+    //   },
+    //   [dispatch]
+    // );
 
     const changeFilter = useCallback(
       (filter: FilterValuesType, todolistId: string) => {
@@ -69,12 +72,12 @@ export const Todolist = memo(
       [dispatch]
     );
 
-    const changeTaskTitle = useCallback(
-      (taskId: string, newTitle: string, todolistId: string) => {
-        dispatch(changeTaskTitleAC(taskId, newTitle, todolistId));
-      },
-      [dispatch]
-    );
+    // const changeTaskTitle = useCallback(
+    //   (taskId: string, newTitle: string, todolistId: string) => {
+    //     dispatch(changeTaskTitleAC(taskId, newTitle, todolistId));
+    //   },
+    //   [dispatch]
+    // );
 
     let tasksForTodolist = tasks;
     if (todolist.filter === "Completed") {
@@ -96,10 +99,10 @@ export const Todolist = memo(
               <Task
                 key={t.id}
                 todolistId={todolist.id}
-                removeTask={removeTask}
+                // removeTask={removeTask}
                 task={t}
-                changeTaskStatus={changeTaskStatus}
-                changeTaskTitle={changeTaskTitle}
+                // changeTaskStatus={changeTaskStatus}
+                // changeTaskTitle={changeTaskTitle}
               />
             );
           })}

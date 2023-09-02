@@ -1,7 +1,7 @@
 import "./App.css";
-import { Todolist } from "./components/TodoList";
+import { Todolist } from "./components/TodoList/TodoList";
 import { useCallback } from "react";
-import { AddItemForm } from "./components/AddItemForm";
+import { AddItemForm } from "./components/AddItemForm/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -33,7 +33,7 @@ export type TodolistOfTasksType = {
   [key: string]: Array<TaskType>;
 };
 
-export function AppWithRedux() {
+export function App() {
   const dispatch = useDispatch();
   const todolists = useSelector<AppRootStateType, TodolistType[]>(
     (state) => state.todolists

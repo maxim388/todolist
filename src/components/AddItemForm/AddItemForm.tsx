@@ -8,25 +8,25 @@ export type AddItemFormPropsType = {
 };
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
+    setTaskTitle(e.currentTarget.value);
   };
   const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null);
     }
     if (e.code === "Enter") {
-      props.addItem(newTaskTitle);
-      setNewTaskTitle("");
+      props.addItem(taskTitle);
+      setTaskTitle("");
     }
   };
-  const addTaskHandler = () => {
-    if (newTaskTitle.trim() !== "") {
-      props.addItem(newTaskTitle.trim());
-      setNewTaskTitle("");
+  const addTaskTitleHandler = () => {
+    if (taskTitle.trim() !== "") {
+      props.addItem(taskTitle.trim());
+      setTaskTitle("");
     } else {
       setError("Title is required");
     }
@@ -36,7 +36,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
     <div>
       <TextField
         size="small"
-        value={newTaskTitle}
+        value={taskTitle}
         onChange={onNewTitleChangeHandler}
         onKeyUp={onKeyUpHandler}
         variant={"outlined"}
@@ -44,7 +44,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
         error={!!error}
         helperText={error}
       />
-      <IconButton onClick={addTaskHandler}>
+      <IconButton onClick={addTaskTitleHandler}>
         <AddBoxIcon color="primary" fontSize="medium" />
       </IconButton>
     </div>
