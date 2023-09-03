@@ -1,15 +1,15 @@
 import { Provider } from "react-redux";
 import { Task } from "../../components/Task";
-import { todolistId1 } from "../../reducers/todolists-reducer";
+import { todolistId1, todolistId2 } from "../../reducers/todolists-reducer";
 import { action } from "@storybook/addon-actions";
 import { store } from "../../store/store";
+import { ReduxStoreProviderDecorator } from "../../stories/ReduxStoreProviderDecorator";
 
 export default {
-  title: "Task",
+  title: "TODOLIST/Task",
   component: Task,
+  decorators: [ReduxStoreProviderDecorator],
 };
-
-// const callback = action("Button 'add' was pressed inside the form");
 
 export const BaseExample = () => {
   return (
@@ -19,7 +19,7 @@ export const BaseExample = () => {
         task={{ id: "1", isDone: true, title: "CSS" }}
       />
       <Task
-        todolistId={todolistId1}
+        todolistId={todolistId2}
         task={{ id: "2", isDone: false, title: "JS" }}
       />
     </Provider>
