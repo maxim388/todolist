@@ -12,7 +12,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import { addTodolistAC } from "./reducers/todolists-reducer";
-import { addTaskAC } from "./reducers/tasks-reducer";
 import { useDispatch } from "react-redux";
 import { AppRootStateType } from "./store/store";
 import { useSelector } from "react-redux";

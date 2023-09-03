@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import { FilterValuesType } from "../App";
 
 export type ButtonPropsType = {
