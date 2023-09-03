@@ -1,5 +1,5 @@
-import { FilterValuesType } from "../App";
 import { Button, IconButton } from "@mui/material";
+import { FilterValuesType } from "../App";
 
 export type ButtonPropsType = {
   id: string;
@@ -10,9 +10,6 @@ export type ButtonPropsType = {
 };
 
 export function MyButton(props: ButtonPropsType) {
-  // debugger;
-
-  console.log("MyButton");
 
   const onAllClickHandler = () => props.changeFilter(props.title, props.id);
 

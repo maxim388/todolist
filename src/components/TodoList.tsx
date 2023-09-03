@@ -1,91 +1,86 @@
-import React, { useCallback, ChangeEvent } from "react";
-import { FilterValuesType, TaskType } from "../App";
+import React, { memo, useCallback } from "react";
+import { FilterValuesType, TaskType, TodolistType } from "../App";
 import { MyButton } from "./MyButton";
-import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import { Delete } from "@mui/icons-material";
 import { Task } from "./Task";
+import { useSelector } from "react-redux";
+import { AppRootStateType } from "../store/store";
+import { useDispatch } from "react-redux";
+import {
+  changeTodolistFilterAC,
+  changeTodolistTitleAC,
+  removeTodolistAC,
+} from "../reducers/todolists-reducer";
+import { addTaskAC } from "../reducers/tasks-reducer";
+import { AddItemForm } from "./AddItemForm";
 
 export type TodolistPropsType = {
-  id: string;
-  title: string;
-  tasks: Array<TaskType>;
+  todolist: TodolistType;
   arrTitleFilter: Array<FilterValuesType>;
-  filter: FilterValuesType;
-  removeTask: (taskId: string, todolistId: string) => void;
-  changeFilter: (value: FilterValuesType, todolistId: string) => void;
-  addTask: (title: string, todolistId: string) => void;
-  changeTaskStatus: (task: string, isBone: boolean, todolistId: string) => void;
-  changeTaskTitle: (task: string, newTitle: string, todolistId: string) => void;
-  changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void;
-  removeTodolist: (todolistId: string) => void;
 };
 
-export const Todolist = React.memo(
-  ({ addTask, changeTodolistTitle, id, ...restProps }: TodolistPropsType) => {
-
-    // debugger;
-    console.log("Todolist");
-
-    const addTaskForTodolist = useCallback(
-      (title: string) => {
-        return addTask(title, id);
-      },
-      [addTask, id]
+export const Todolist = memo(
+  ({ todolist, arrTitleFilter }: TodolistPropsType) => {
+    const dispatch = useDispatch();
+    const tasks = useSelector<AppRootStateType, TaskType[]>(
+      (state) => state.tasks[todolist.id]
     );
 
-    const removeTodolist = () => {
-      restProps.removeTodolist(id);
-    };
+    const removeTodolist = useCallback(() => {
+      dispatch(removeTodolistAC(todolist.id));
+    }, [dispatch, todolist.id]);
 
-    const changeTitleForTodolist = useCallback(
+    const changeTodolistTitle = useCallback(
       (newTodolistTitle: string) => {
-        changeTodolistTitle(newTodolistTitle, id);
+        dispatch(changeTodolistTitleAC(newTodolistTitle, todolist.id));
       },
-      [changeTodolistTitle, id]
+      [dispatch, todolist.id]
     );
 
-    let tasksForTodolist = restProps.tasks;
-    if (restProps.filter === "Completed") {
-      tasksForTodolist = restProps.tasks.filter((t) => t.isDone);
+    const addTask = useCallback(
+      (taskTitle: string) => {
+        dispatch(addTaskAC(taskTitle, todolist.id));
+      },
+      [dispatch, todolist.id]
+    );
+
+    const changeFilter = useCallback(
+      (filter: FilterValuesType, todolistId: string) => {
+        dispatch(changeTodolistFilterAC(filter, todolistId));
+      },
+      [dispatch]
+    );
+
+    let tasksForTodolist = tasks;
+    if (todolist.filter === "Completed") {
+      tasksForTodolist = tasks.filter((t) => t.isDone);
     }
-    if (restProps.filter === "Active") {
-      tasksForTodolist = restProps.tasks.filter((t) => !t.isDone);
+    if (todolist.filter === "Active") {
+      tasksForTodolist = tasks.filter((t) => !t.isDone);
     }
     return (
       <div>
         <h3>
-          <EditableSpan
-            title={restProps.title}
-            onChange={changeTitleForTodolist}
-          />
+          <EditableSpan title={todolist.title} onChange={changeTodolistTitle} />
           <Button onClick={removeTodolist} startIcon={<Delete />}></Button>
         </h3>
-        <AddItemForm addItem={addTaskForTodolist} />
+        <AddItemForm addItem={addTask} />
         <div>
           {tasksForTodolist.map((t) => {
-            return (
-              <Task
-                key={t.id}
-                todolistId={id}
-                removeTask={restProps.removeTask}
-                task={t}
-                changeTaskStatus={restProps.changeTaskStatus}
-                changeTaskTitle={restProps.changeTaskTitle}
-              />
-            );
+            return <Task key={t.id} todolistId={todolist.id} task={t} />;
           })}
         </div>
         <div>
-          {restProps.arrTitleFilter.map((t) => {
+          {arrTitleFilter.map((t) => {
             return (
               <MyButton
                 key={t}
                 title={t}
-                id={id}
-                changeFilter={restProps.changeFilter}
-                filter={restProps.filter}
+                id={todolist.id}
+                changeFilter={changeFilter}
+                filter={todolist.filter}
               />
             );
           })}
@@ -94,4 +89,3 @@ export const Todolist = React.memo(
     );
   }
 );
-

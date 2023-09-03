@@ -1,46 +1,40 @@
-import React, { useCallback, ChangeEvent } from "react";
-import { TaskType } from "../App";
+import React, { useCallback, ChangeEvent, memo } from "react";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
+import { TaskType } from "../App";
+import { useDispatch } from "react-redux";
+import {
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+} from "../reducers/tasks-reducer";
 
 export type TaskPropsType = {
   todolistId: string;
   task: TaskType;
-  removeTask: (taskId: string, todolistId: string) => void;
-  changeTaskStatus: (task: string, isBone: boolean, todolistId: string) => void;
-  changeTaskTitle: (task: string, newTitle: string, todolistId: string) => void;
 };
 
-export const Task = React.memo(
+export const Task = memo(
   ({
-    removeTask,
-    changeTaskStatus,
-    changeTaskTitle,
     task,
     todolistId,
   }: TaskPropsType) => {
 
-    console.log("Task");
+    const dispatch = useDispatch();
 
-    const onRemoveHendler = useCallback(
-      () => removeTask(task.id, todolistId),
-      [task.id, todolistId]
-    );
+    const onRemoveHendler = () => dispatch(removeTaskAC(task.id, todolistId));
 
-    const onChangeStatusHandler = useCallback(
-      (e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(task.id, e.currentTarget.checked, todolistId);
-      },
-      [changeTaskStatus, task.id, todolistId]
-    );
-    const onChangeTitleHandler = useCallback(
-      (newValue: string) => {
-        changeTaskTitle(task.id, newValue, todolistId);
-      },
-      [changeTaskTitle, task.id, todolistId]
-    );
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      dispatch(
+        changeTaskStatusAC(task.id, e.currentTarget.checked, todolistId)
+      );
+    };
+
+    const onChangeTitleHandler = (newValue: string) => {
+      dispatch(changeTaskTitleAC(task.id, newValue, todolistId));
+    };
 
     return (
       <div key={task.id} className={task.isDone ? "is-done" : ""}>
