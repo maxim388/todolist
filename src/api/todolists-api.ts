@@ -18,6 +18,20 @@ type ResponceType<D = {}> = {
   fieldsErrors: string[];
   resultCode: number;
 };
+export enum TodoTaskStatus {
+  New = 0,
+  InProgress = 1,
+  Completed = 2,
+  Draft = 3,
+}
+
+export enum TodoTaskPriority {
+  Low = 0,
+  Middle = 1,
+  Hi = 2,
+  Urgently = 3,
+  Later = 4,
+}
 
 export type TaskTypeAPI = {
   id: string;
@@ -25,8 +39,8 @@ export type TaskTypeAPI = {
   description: string;
   todoListId: string;
   order: number;
-  status: number;
-  priority: number;
+  status: TodoTaskStatus;
+  priority: TodoTaskPriority;
   startDate: string;
   deadline: string;
   addedDate: string;
@@ -41,8 +55,8 @@ type GetTaskResponceType = {
 type UpdateTaskModelType = {
   title: string;
   description: string;
-  status: number;
-  priority: number;
+  status: TodoTaskStatus;
+  priority: TodoTaskPriority;
   startDate: string;
   deadline: string;
 };

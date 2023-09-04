@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from "react";
-// import { FilterValuesType, TaskType, TodolistType } from "../App";
 import { MyButton } from "./MyButton";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
@@ -15,8 +14,9 @@ import {
   changeTodolistTitleAC,
   removeTodolistAC,
 } from "../reducers/todolists-reducer";
-import { TaskType, addTaskAC } from "../reducers/tasks-reducer";
+import { addTaskAC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
+import { TaskTypeAPI, TodoTaskStatus } from "../api/todolists-api";
 
 export type TodolistPropsType = {
   todolist: TodolisDomaintType;
@@ -26,7 +26,7 @@ export type TodolistPropsType = {
 export const Todolist = memo(
   ({ todolist, arrTitleFilter }: TodolistPropsType) => {
     const dispatch = useDispatch();
-    const tasks = useSelector<AppRootStateType, TaskType[]>(
+    const tasks = useSelector<AppRootStateType, TaskTypeAPI[]>(
       (state) => state.tasks[todolist.id]
     );
 
@@ -57,10 +57,12 @@ export const Todolist = memo(
 
     let tasksForTodolist = tasks;
     if (todolist.filter === "Completed") {
-      tasksForTodolist = tasks.filter((t) => t.isDone);
+      tasksForTodolist = tasks.filter(
+        (t) => t.status === TodoTaskStatus.Completed
+      );
     }
     if (todolist.filter === "Active") {
-      tasksForTodolist = tasks.filter((t) => !t.isDone);
+      tasksForTodolist = tasks.filter((t) => t.status === TodoTaskStatus.New);
     }
     return (
       <div>
