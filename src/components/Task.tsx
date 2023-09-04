@@ -3,9 +3,9 @@ import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import { TaskType } from "../App";
 import { useDispatch } from "react-redux";
 import {
+  TaskType,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,

@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from "react";
-import { FilterValuesType, TaskType, TodolistType } from "../App";
+// import { FilterValuesType, TaskType, TodolistType } from "../App";
 import { MyButton } from "./MyButton";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
@@ -9,16 +9,18 @@ import { useSelector } from "react-redux";
 import { AppRootStateType } from "../store/store";
 import { useDispatch } from "react-redux";
 import {
+  FilterValuesType,
+  TodolisDomaintType,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
 } from "../reducers/todolists-reducer";
-import { addTaskAC } from "../reducers/tasks-reducer";
+import { TaskType, addTaskAC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 
 export type TodolistPropsType = {
-  todolist: TodolistType;
-  arrTitleFilter: Array<FilterValuesType>;
+  todolist: TodolisDomaintType;
+  arrTitleFilter: FilterValuesType[];
 };
 
 export const Todolist = memo(

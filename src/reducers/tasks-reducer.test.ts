@@ -1,11 +1,12 @@
 import { addTodolistAC, removeTodolistAC } from "./todolists-reducer";
 import {
+  TodolistOfTasksType,
   addTaskAC,
   changeTaskStatusAC,
   removeTaskAC,
   tasksReducer,
 } from "./tasks-reducer";
-import { TodolistOfTasksType } from "../App";
+
 
 let startState: TodolistOfTasksType;
 

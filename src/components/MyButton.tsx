@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
-import { FilterValuesType } from "../App";
+import { FilterValuesType } from "../reducers/todolists-reducer";
+
 
 export type ButtonPropsType = {
   id: string;
@@ -19,7 +20,6 @@ export function MyButton(props: ButtonPropsType) {
       disabled={props.disabled}
       className={props.filter === props.title ? "active-filter" : ""}
       variant={props.filter === props.title ? "contained" : undefined}
-      // color={"secondary"}
     >
       {props.title}
     </Button>

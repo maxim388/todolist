@@ -1,12 +1,10 @@
 import { v1 } from "uuid";
-import { TodolistOfTasksType } from "../App";
 import {
   ADD_TODOLIST,
   AddTodolistACType,
   REMOVE_TODOLIST,
   RemoveTodolistACType,
-  todolistId1,
-  todolistId2,
+
 } from "./todolists-reducer";
 
 const REMOVE_TASK = "REMOVE-TASK";
@@ -14,18 +12,16 @@ const ADD_TASK = "ADD-TASK";
 const CHANGE_TASK_STATUS = "CHANGE-TASK-STATUS";
 const CHANGE_TASK_TITLE = "CHANGE-TASK-TITLE";
 
-const initialState: TodolistOfTasksType = {
-  [todolistId1]: [
-    { id: v1(), title: "HTML&CSS", isDone: true },
-    { id: v1(), title: "JS/TS", isDone: true },
-    { id: v1(), title: "ReactJS", isDone: false },
-    { id: v1(), title: "Redux", isDone: false },
-    { id: v1(), title: "REST API", isDone: false },
-  ],
-  [todolistId2]: [
-    { id: v1(), title: "book", isDone: false },
-    { id: v1(), title: "milk", isDone: true },
-  ],
+const initialState: TodolistOfTasksType = {};
+
+export type TaskType = {
+  id: string;
+  title: string;
+  isDone: boolean;
+};
+
+export type TodolistOfTasksType = {
+  [key: string]: TaskType[];
 };
 
 type ActionsType =
