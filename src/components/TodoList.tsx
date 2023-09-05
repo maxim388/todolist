@@ -9,7 +9,7 @@ import { AppRootStateType } from "../store/store";
 import { useDispatch } from "react-redux";
 import {
   FilterValuesType,
-  TodolisDomaintType,
+  TodolistDomainType,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
@@ -19,7 +19,7 @@ import { AddItemForm } from "./AddItemForm";
 import { TaskTypeAPI, TodoTaskStatus } from "../api/todolists-api";
 
 export type TodolistPropsType = {
-  todolist: TodolisDomaintType;
+  todolist: TodolistDomainType;
   arrTitleFilter: FilterValuesType[];
 };
 

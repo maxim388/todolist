@@ -21,7 +21,7 @@ export const Task = memo(({ task, todolistId }: TaskPropsType) => {
 
   const onRemoveHendler = () => dispatch(removeTaskAC(task.id, todolistId));
 
-  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {  
     dispatch(changeTaskStatusAC(task.id, Number(e.currentTarget.checked), todolistId));
   };
 

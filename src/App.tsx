@@ -1,6 +1,6 @@
 import "./App.css";
 import { Todolist } from "./components/TodoList";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { AddItemForm } from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -13,8 +13,9 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   FilterValuesType,
-  TodolisDomaintType,
+  TodolistDomainType,
   addTodolistAC,
+  fetchTodolistThunk,
 } from "./reducers/todolists-reducer";
 import { useDispatch } from "react-redux";
 import { AppRootStateType } from "./store/store";
@@ -23,11 +24,15 @@ import { Box } from "@mui/material";
 
 export function App() {
   const dispatch = useDispatch();
-  const todolists = useSelector<AppRootStateType, TodolisDomaintType[]>(
+  const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(
     (state) => state.todolists
   );
 
   let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+
+  useEffect(() => {
+    // dispatch(fetchTodolistThunkCreator);
+  }, []);
 
   const addTodoList = useCallback(
     (title: string) => {

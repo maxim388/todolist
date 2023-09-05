@@ -1,12 +1,17 @@
 import { v1 } from "uuid";
 import {
-  ADD_TODOLIST,
-  AddTodolistACType,
   REMOVE_TODOLIST,
   RemoveTodolistACType,
-
+  ADD_TODOLIST,
+  SET_TODOLISTS,
+  SetTodolistACType,
+  AddTodolistACType,
 } from "./todolists-reducer";
-import { TaskTypeAPI, TodoTaskPriority, TodoTaskStatus } from "../api/todolists-api";
+import {
+  TaskTypeAPI,
+  TodoTaskPriority,
+  TodoTaskStatus,
+} from "../api/todolists-api";
 
 const REMOVE_TASK = "REMOVE-TASK";
 const ADD_TASK = "ADD-TASK";
@@ -24,6 +29,7 @@ type ActionsType =
   | AddTaskACType
   | ChangeTaskStatusACType
   | ChangeTaskTitleACType
+  | SetTodolistACType
   | AddTodolistACType
   | RemoveTodolistACType;
 
@@ -81,6 +87,12 @@ export const tasksReducer = (
       const stateCopy = { ...state };
       delete stateCopy[action.todolistId];
       return stateCopy;
+    case SET_TODOLISTS:
+      const copyState = { ...state };
+      action.todolists.forEach((tl) => {
+        copyState[tl.id] = [];
+      });
+      return copyState;
     default:
       return state;
   }
