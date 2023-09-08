@@ -2,9 +2,8 @@ import { AddItemForm } from "../../components/AddItemForm";
 import { action } from "@storybook/addon-actions";
 
 export default {
-  title: "AddItemForm",
+  title: "TODOLIST/AddItemForm",
   component: AddItemForm,
-  
 };
 
 const callback = action("Button 'add' was pressed inside the form");

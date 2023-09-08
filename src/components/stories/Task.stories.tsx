@@ -1,26 +1,47 @@
 import { Provider } from "react-redux";
 import { Task } from "../../components/Task";
-import { todolistId1 } from "../../reducers/todolists-reducer";
-import { action } from "@storybook/addon-actions";
 import { store } from "../../store/store";
+import { ReduxStoreProviderDecorator } from "../../stories/ReduxStoreProviderDecorator";
+import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
 
 export default {
-  title: "Task",
+  title: "TODOLIST/Task",
   component: Task,
+  decorators: [ReduxStoreProviderDecorator],
 };
-
-// const callback = action("Button 'add' was pressed inside the form");
 
 export const BaseExample = () => {
   return (
     <Provider store={store}>
       <Task
-        todolistId={todolistId1}
-        task={{ id: "1", isDone: true, title: "CSS" }}
+        todolistId={"todolistId1"}
+        task={{
+          id: "1",
+          title: "CSS",
+          description: "",
+          todoListId: "todolistId1",
+          order: 0,
+          status: TodoTaskStatus.New,
+          priority: TodoTaskPriority.Later,
+          startDate: "",
+          deadline: "",
+          addedDate: "",
+        }}
       />
       <Task
-        todolistId={todolistId1}
-        task={{ id: "2", isDone: false, title: "JS" }}
+        todolistId={"todolistId2"}
+        task={{
+          id: "2",
+          title: "JS",
+          description: "",
+          todoListId: "todolistId1",
+          order: 0,
+          status: TodoTaskStatus.New,
+          priority: TodoTaskPriority.Later,
+          startDate: "",
+          deadline: "",
+          addedDate: "",
+        }}
       />
     </Provider>
   );

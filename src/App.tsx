@@ -1,6 +1,6 @@
 import "./App.css";
 import { Todolist } from "./components/TodoList";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { AddItemForm } from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -11,35 +11,28 @@ import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { addTodolistAC } from "./reducers/todolists-reducer";
-import { addTaskAC } from "./reducers/tasks-reducer";
+import {
+  FilterValuesType,
+  TodolistDomainType,
+  addTodolistAC,
+  fetchTodolistThunkCreator,
+} from "./reducers/todolists-reducer";
 import { useDispatch } from "react-redux";
 import { AppRootStateType } from "./store/store";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 
-export type FilterValuesType = "All" | "Active" | "Completed";
-export type TodolistType = {
-  id: string;
-  title: string;
-  filter: FilterValuesType;
-};
-export type TaskType = {
-  id: string;
-  title: string;
-  isDone: boolean;
-};
-export type TodolistOfTasksType = {
-  [key: string]: Array<TaskType>;
-};
-
 export function App() {
   const dispatch = useDispatch();
-  const todolists = useSelector<AppRootStateType, TodolistType[]>(
+  const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(
     (state) => state.todolists
   );
 
-  let arrTitleFilter: Array<FilterValuesType> = ["All", "Active", "Completed"];
+  let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+
+  useEffect(() => {
+    dispatch(fetchTodolistThunkCreator());
+  }, [dispatch]);
 
   const addTodoList = useCallback(
     (title: string) => {
