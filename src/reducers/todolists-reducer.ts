@@ -1,6 +1,9 @@
 import { v1 } from "uuid";
 import { TodolistTypeAPI, todolistsAPI } from "../api/todolists-api";
 import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { setTasksAC } from "./tasks-reducer";
+import { AppActionsType, AppThunkType } from "../store/store";
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
@@ -14,16 +17,9 @@ export type FilterValuesType = "All" | "Active" | "Completed";
 
 export type TodolistDomainType = TodolistTypeAPI & { filter: FilterValuesType };
 
-type ActionsType =
-  | RemoveTodolistACType
-  | AddTodolistACType
-  | ChangeTodolistTitleACType
-  | ChangeTodolistFilterACType
-  | SetTodolistACType;
-
 export const todolistsReducer = (
   state: TodolistDomainType[] = initialState,
-  action: ActionsType
+  action: TodolistsActionsType
 ): TodolistDomainType[] => {
   switch (action.type) {
     case REMOVE_TODOLIST:
@@ -53,6 +49,12 @@ export const todolistsReducer = (
       return state;
   }
 };
+export type TodolistsActionsType =
+  | RemoveTodolistACType
+  | AddTodolistACType
+  | ChangeTodolistTitleACType
+  | ChangeTodolistFilterACType
+  | SetTodolistsACType;
 
 export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
 export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
@@ -62,12 +64,11 @@ export type ChangeTodolistTitleACType = ReturnType<
 export type ChangeTodolistFilterACType = ReturnType<
   typeof changeTodolistFilterAC
 >;
-export type SetTodolistACType = ReturnType<typeof setTodolistAC>;
+export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>;
 
 export const removeTodolistAC = (todolistId: string) => {
   return { type: REMOVE_TODOLIST, todolistId } as const;
 };
-
 export const addTodolistAC = (title: string) => {
   return {
     type: ADD_TODOLIST,
@@ -95,17 +96,26 @@ export const changeTodolistFilterAC = (
   } as const;
 };
 
-export const setTodolistAC = (todolists: TodolistDomainType[]) => {
+export const setTodolistsAC = (todolists: TodolistDomainType[]) => {
   return {
     type: SET_TODOLISTS,
     todolists,
   } as const;
 };
 
-export const fetchTodolistThunkCreator = () => {
-  return (dispatch: Dispatch) => {
+export const fetchTodolistsTC = (): AppThunkType => {
+  return (dispatch) => {
     todolistsAPI.getTodolists().then((res) => {
-      dispatch(setTodolistAC(res.data));
+      dispatch(setTodolistsAC(res.data));
     });
   };
 };
+
+// export const fetchTodolistsTC = (): AppThunkType => async (dispatch) => {
+//   try {
+//     const res = await todolistsAPI.getTodolists();
+//     dispatch(setTodolistsAC(res.data));
+//   } catch (e) {
+//     throw new Error(e);
+//   }
+// };

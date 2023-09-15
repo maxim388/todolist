@@ -15,7 +15,7 @@ import {
   FilterValuesType,
   TodolistDomainType,
   addTodolistAC,
-  fetchTodolistThunkCreator,
+  fetchTodolistsTC,
 } from "./reducers/todolists-reducer";
 import { useDispatch } from "react-redux";
 import { AppRootStateType } from "./store/store";
@@ -31,7 +31,8 @@ export function App() {
   let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
   useEffect(() => {
-    dispatch(fetchTodolistThunkCreator());
+    // @ts-ignore
+    dispatch(fetchTodolistsTC());
   }, [dispatch]);
 
   const addTodoList = useCallback(

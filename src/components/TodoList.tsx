@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import { MyButton } from "./MyButton";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
@@ -14,7 +14,7 @@ import {
   changeTodolistTitleAC,
   removeTodolistAC,
 } from "../reducers/todolists-reducer";
-import { addTaskAC } from "../reducers/tasks-reducer";
+import { addTaskAC, fetchTasksTC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TaskTypeAPI, TodoTaskStatus } from "../api/todolists-api";
 
@@ -29,6 +29,11 @@ export const Todolist = memo(
     const tasks = useSelector<AppRootStateType, TaskTypeAPI[]>(
       (state) => state.tasks[todolist.id]
     );
+
+    useEffect(() => {
+      // @ts-ignore
+      dispatch(fetchTasksTC(todolist.id));
+    }, [dispatch]);
 
     const removeTodolist = useCallback(() => {
       dispatch(removeTodolistAC(todolist.id));

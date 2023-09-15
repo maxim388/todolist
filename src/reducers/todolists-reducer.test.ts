@@ -5,7 +5,7 @@ import {
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
-  setTodolistAC,
+  setTodolistsAC,
   todolistsReducer,
 } from "./todolists-reducer";
 import { v1 } from "uuid";
@@ -79,7 +79,7 @@ test("correct filter of todolist should be changed", () => {
 });
 
 test("todolists schould be set to the state", () => {
-  const action = setTodolistAC(startState);
+  const action = setTodolistsAC(startState);
 
   const endState = todolistsReducer(startState, action);
 
