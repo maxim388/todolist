@@ -17,6 +17,7 @@ import {
 import { addTaskAC, fetchTasksTC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TaskTypeAPI, TodoTaskStatus } from "../api/todolists-api";
+import { useAppDispatch } from "../app/hooks";
 
 export type TodolistPropsType = {
   todolist: TodolistDomainType;
@@ -25,13 +26,13 @@ export type TodolistPropsType = {
 
 export const Todolist = memo(
   ({ todolist, arrTitleFilter }: TodolistPropsType) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const tasks = useSelector<AppRootStateType, TaskTypeAPI[]>(
       (state) => state.tasks[todolist.id]
     );
 
     useEffect(() => {
-      // @ts-ignore
       dispatch(fetchTasksTC(todolist.id));
     }, [dispatch]);
 
