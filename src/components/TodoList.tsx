@@ -9,9 +9,9 @@ import {
   TodolistDomainType,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
-  removeTodolistAC,
+  removeTodolistTC,
 } from "../reducers/todolists-reducer";
-import { addTaskAC, fetchTasksTC } from "../reducers/tasks-reducer";
+import { addTaskAC, addTaskTC, fetchTasksTC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TodoTaskStatus } from "../api/todolists-api";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -31,7 +31,7 @@ export const Todolist: FC<TodolistPropsType> = memo(
     }, [dispatch, todolist.id]);
 
     const removeTodolist = useCallback(() => {
-      dispatch(removeTodolistAC(todolist.id));
+      dispatch(removeTodolistTC(todolist.id));
     }, [dispatch, todolist.id]);
 
     const changeTodolistTitle = useCallback(
@@ -43,7 +43,7 @@ export const Todolist: FC<TodolistPropsType> = memo(
 
     const addTask = useCallback(
       (taskTitle: string) => {
-        dispatch(addTaskAC(todolist.id, taskTitle));
+        dispatch(addTaskTC(todolist.id, taskTitle));
       },
       [dispatch, todolist.id]
     );

@@ -3,14 +3,12 @@ import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
 import {
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskTC,
 } from "../reducers/tasks-reducer";
 import { TaskTypeAPI } from "../api/todolists-api";
-import { AppDispatch } from "../store/store";
 import { useAppDispatch } from "../app/hooks";
 
 export type TaskPropsType = {

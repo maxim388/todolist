@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   FilterValuesType,
-  addTodolistAC,
+  addTodolistTC,
   fetchTodolistsTC,
 } from "./reducers/todolists-reducer";
 import { Box } from "@mui/material";
@@ -31,7 +31,7 @@ export function App() {
 
   const addTodoList = useCallback(
     (title: string) => {
-      dispatch(addTodolistAC(title));
+      dispatch(addTodolistTC(title));
     },
     [dispatch]
   );

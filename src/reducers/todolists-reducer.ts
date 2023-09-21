@@ -24,10 +24,7 @@ export const todolistsReducer = (
     case ADD_TODOLIST:
       return [
         {
-          id: action.todolistId,
-          title: action.title,
-          addedDate: String(new Date()),
-          order: 0,
+          ...action.todolist,
           filter: "All",
         },
         ...state,
@@ -63,11 +60,10 @@ export const removeTodolistAC = (todolistId: string) => {
   return { type: REMOVE_TODOLIST, todolistId } as const;
 };
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (todolist: TodolistTypeAPI) => {
   return {
     type: ADD_TODOLIST,
-    title,
-    todolistId: v1(),
+    todolist,
   } as const;
 };
 
@@ -102,6 +98,28 @@ export const fetchTodolistsTC = (): AppThunkType => {
     try {
       const res = await todolistsAPI.getTodolists();
       dispatch(setTodolistsAC(res.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const addTodolistTC = (todolistTitle: string): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await todolistsAPI.createTodolist(todolistTitle);
+      dispatch(addTodolistAC(res.data.data.item)); //fix data.data
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const removeTodolistTC = (todolistId: string): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      await todolistsAPI.deleteTodolist(todolistId);
+      dispatch(removeTodolistAC(todolistId));
     } catch (e) {
       console.log(e);
     }

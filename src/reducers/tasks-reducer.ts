@@ -1,4 +1,3 @@
-import { v1 } from "uuid";
 import {
   REMOVE_TODOLIST,
   RemoveTodolistACType,
@@ -42,20 +41,9 @@ export const tasksReducer = (
     case ADD_TASK:
       return {
         ...state,
-        [action.todolistId]: [
-          {
-            id: v1(),
-            title: action.title,
-            description: "",
-            todoListId: action.todolistId,
-            order: 0,
-            status: TodoTaskStatus.New,
-            priority: TodoTaskPriority.Later,
-            startDate: "",
-            deadline: "",
-            addedDate: "",
-          },
-          ...state[action.todolistId],
+        [action.task.todoListId]: [
+          action.task,
+          ...state[action.task.todoListId],
         ],
       };
     case CHANGE_TASK_STATUS:
@@ -75,7 +63,7 @@ export const tasksReducer = (
     case ADD_TODOLIST:
       return {
         ...state,
-        [action.todolistId]: [],
+        [action.todolist.id]: [],
       };
     case REMOVE_TODOLIST:
       const stateCopy = { ...state };
@@ -121,11 +109,10 @@ export const removeTaskAC = (todolistId: string, taskId: string) => {
   } as const;
 };
 
-export const addTaskAC = (todolistId: string, title: string) => {
+export const addTaskAC = (task: TaskTypeAPI) => {
   return {
     type: ADD_TASK,
-    todolistId,
-    title,
+    task,
   } as const;
 };
 
@@ -168,6 +155,20 @@ export const fetchTasksTC = (todolistId: string): AppThunkType => {
     try {
       const res = await todolistsAPI.getTasks(todolistId);
       dispatch(setTasksAC(todolistId, res.data.items)); //fix
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const addTaskTC = (
+  todolistId: string,
+  taskTitle: string
+): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await todolistsAPI.createTask(todolistId, taskTitle);
+      dispatch(addTaskAC(res.data.data.items)); //fix data.data
     } catch (e) {
       console.log(e);
     }

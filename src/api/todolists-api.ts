@@ -76,10 +76,10 @@ type TodolistsAPIType = {
     id: string,
     title: string
   ) => Promise<AxiosResponse<any, any>>;
-  getTasks: (todolistId: string) => Promise<AxiosResponse<GetTaskResponceType>>; //fix
+  getTasks: (todolistId: string) => Promise<AxiosResponse<any, any>>; //fix
   createTask: (
     todolistId: string,
-    titleTask: string
+    taskTitle: string
   ) => Promise<AxiosResponse<any, any>>;
   deleteTask: (
     todolistId: string,
@@ -112,13 +112,10 @@ export const todolistsAPI: TodolistsAPIType = {
   getTasks(todolistId: string) {
     return instance.get<GetTaskResponceType>(`todo-lists/${todolistId}/tasks`);
   },
-  createTask(todolistId: string, titleTask: string) {
-    return instance.post<ResponceType<TaskTypeAPI>>(
-      `todo-lists/${todolistId}/tasks/`,
-      {
-        title: titleTask,
-      }
-    );
+  createTask(todolistId: string, taskTitle: string) {
+    return instance.post<ResponceType>(`todo-lists/${todolistId}/tasks/`, { 
+      title: taskTitle,
+    });
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<ResponceType>(
