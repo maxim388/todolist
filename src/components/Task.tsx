@@ -1,4 +1,4 @@
-import React, { useCallback, ChangeEvent, memo } from "react";
+import { useCallback, ChangeEvent, memo, FC } from "react";
 import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -7,27 +7,32 @@ import { useDispatch } from "react-redux";
 import {
   changeTaskStatusAC,
   changeTaskTitleAC,
-  removeTaskAC,
+  removeTaskTC,
 } from "../reducers/tasks-reducer";
 import { TaskTypeAPI } from "../api/todolists-api";
+import { AppDispatch } from "../store/store";
+import { useAppDispatch } from "../app/hooks";
 
 export type TaskPropsType = {
   todolistId: string;
   task: TaskTypeAPI;
 };
 
-export const Task = memo(({ task, todolistId }: TaskPropsType) => {
-  const dispatch = useDispatch();
+export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
+  const dispatch = useAppDispatch();
 
-  const onRemoveHendler = () => dispatch(removeTaskAC(task.id, todolistId));
+  const onRemoveHendler = () => {
+    dispatch(removeTaskTC(todolistId, task.id));
+  };
 
-  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {  
-    dispatch(changeTaskStatusAC(task.id, Number(e.currentTarget.checked), todolistId));
+  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const checked = Number(e.currentTarget.checked);
+    dispatch(changeTaskStatusAC(todolistId, task.id, checked));
   };
 
   const onChangeTitleHandler = useCallback(
     (newValue: string) => {
-      dispatch(changeTaskTitleAC(task.id, newValue, todolistId));
+      dispatch(changeTaskTitleAC(todolistId, task.id, newValue));
     },
     [dispatch, task.id, todolistId]
   );

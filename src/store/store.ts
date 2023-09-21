@@ -2,7 +2,6 @@ import {
   applyMiddleware,
   combineReducers,
   createStore,
-  legacy_createStore,
 } from "redux";
 import { TasksActionsType, tasksReducer } from "../reducers/tasks-reducer";
 import {
@@ -44,10 +43,5 @@ export type AppThunkType<ReturnType = void> = ThunkAction<
   AppActionsType
 >;
 
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
 window.store = store;
-
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;

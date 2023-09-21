@@ -76,7 +76,7 @@ type TodolistsAPIType = {
     id: string,
     title: string
   ) => Promise<AxiosResponse<any, any>>;
-  getTasks: (todolistId: string) => Promise<AxiosResponse<any, any>>;
+  getTasks: (todolistId: string) => Promise<AxiosResponse<GetTaskResponceType>>; //fix
   createTask: (
     todolistId: string,
     titleTask: string

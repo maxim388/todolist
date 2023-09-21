@@ -170,7 +170,7 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  const action = addTaskAC("juce", "todolistId2");
+  const action = addTaskAC("todolistId2", "juce");
 
   const endState = tasksReducer(startState, action);
 
@@ -182,7 +182,7 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = changeTaskStatusAC("2", TodoTaskStatus.New, "todolistId2");
+  const action = changeTaskStatusAC("todolistId2", "2", TodoTaskStatus.New);
 
   const endState = tasksReducer(startState, action);
 
@@ -232,12 +232,15 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const action = setTasksAC(startState["todolistId1"], "todolistId1");
+  const action = setTasksAC("todolistId1", startState["todolistId1"]);
 
-  const endState = tasksReducer({
-    "todolistId2": [],
-    "todolistId1": []
-  }, action);
+  const endState = tasksReducer(
+    {
+      todolistId2: [],
+      todolistId1: [],
+    },
+    action
+  );
 
   expect(endState["todolistId1"].length).toBe(3);
   expect(endState["todolistId2"].length).toBe(0);
