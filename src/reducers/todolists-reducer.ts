@@ -1,6 +1,6 @@
 import { v1 } from "uuid";
 import { TodolistTypeAPI, todolistsAPI } from "../api/todolists-api";
-import { Dispatch } from "redux";
+import { AppThunkType } from "../store/store";
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
@@ -14,16 +14,9 @@ export type FilterValuesType = "All" | "Active" | "Completed";
 
 export type TodolistDomainType = TodolistTypeAPI & { filter: FilterValuesType };
 
-type ActionsType =
-  | RemoveTodolistACType
-  | AddTodolistACType
-  | ChangeTodolistTitleACType
-  | ChangeTodolistFilterACType
-  | SetTodolistACType;
-
 export const todolistsReducer = (
   state: TodolistDomainType[] = initialState,
-  action: ActionsType
+  action: TodolistsActionsType
 ): TodolistDomainType[] => {
   switch (action.type) {
     case REMOVE_TODOLIST:
@@ -31,10 +24,7 @@ export const todolistsReducer = (
     case ADD_TODOLIST:
       return [
         {
-          id: action.todolistId,
-          title: action.title,
-          addedDate: String(new Date()),
-          order: 0,
+          ...action.todolist,
           filter: "All",
         },
         ...state,
@@ -53,30 +43,31 @@ export const todolistsReducer = (
       return state;
   }
 };
+export type TodolistsActionsType =
+  | RemoveTodolistACType
+  | AddTodolistACType
+  | ChangeTodolistTitleACType
+  | ChangeTodolistFilterACType
+  | SetTodolistsACType;
 
 export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
 export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
-export type ChangeTodolistTitleACType = ReturnType<
-  typeof changeTodolistTitleAC
->;
-export type ChangeTodolistFilterACType = ReturnType<
-  typeof changeTodolistFilterAC
->;
-export type SetTodolistACType = ReturnType<typeof setTodolistAC>;
+type ChangeTodolistTitleACType = ReturnType<typeof changeTodolistTitleAC>;
+type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>;
+export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>;
 
 export const removeTodolistAC = (todolistId: string) => {
   return { type: REMOVE_TODOLIST, todolistId } as const;
 };
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (todolist: TodolistTypeAPI) => {
   return {
     type: ADD_TODOLIST,
-    title,
-    todolistId: v1(),
+    todolist,
   } as const;
 };
 
-export const changeTodolistTitleAC = (title: string, todolistId: string) => {
+export const changeTodolistTitleAC = (todolistId: string, title: string) => {
   return {
     type: CHANGE_TODOLIST_TITLE,
     todolistId,
@@ -85,27 +76,52 @@ export const changeTodolistTitleAC = (title: string, todolistId: string) => {
 };
 
 export const changeTodolistFilterAC = (
-  filter: FilterValuesType,
-  todolistId: string
+  todolistId: string,
+  filter: FilterValuesType
 ) => {
   return {
     type: CHANGE_TODOLIST_FILTER,
-    filter,
     todolistId,
+    filter,
   } as const;
 };
 
-export const setTodolistAC = (todolists: TodolistDomainType[]) => {
+export const setTodolistsAC = (todolists: TodolistDomainType[]) => {
   return {
     type: SET_TODOLISTS,
     todolists,
   } as const;
 };
 
-export const fetchTodolistThunkCreator = () => {
-  return (dispatch: Dispatch) => {
-    todolistsAPI.getTodolists().then((res) => {
-      dispatch(setTodolistAC(res.data));
-    });
+export const fetchTodolistsTC = (): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await todolistsAPI.getTodolists();
+      dispatch(setTodolistsAC(res.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const addTodolistTC = (todolistTitle: string): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      const res = await todolistsAPI.createTodolist(todolistTitle);
+      dispatch(addTodolistAC(res.data.data.item)); //fix data.data
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const removeTodolistTC = (todolistId: string): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      await todolistsAPI.deleteTodolist(todolistId);
+      dispatch(removeTodolistAC(todolistId));
+    } catch (e) {
+      console.log(e);
+    }
   };
 };

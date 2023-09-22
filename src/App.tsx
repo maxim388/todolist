@@ -13,30 +13,25 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   FilterValuesType,
-  TodolistDomainType,
-  addTodolistAC,
-  fetchTodolistThunkCreator,
+  addTodolistTC,
+  fetchTodolistsTC,
 } from "./reducers/todolists-reducer";
-import { useDispatch } from "react-redux";
-import { AppRootStateType } from "./store/store";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 
 export function App() {
-  const dispatch = useDispatch();
-  const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(
-    (state) => state.todolists
-  );
+  const dispatch = useAppDispatch();
+  const todolists = useAppSelector((state) => state.todolists);
 
   let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
   useEffect(() => {
-    dispatch(fetchTodolistThunkCreator());
+    dispatch(fetchTodolistsTC());
   }, [dispatch]);
 
   const addTodoList = useCallback(
     (title: string) => {
-      dispatch(addTodolistAC(title));
+      dispatch(addTodolistTC(title));
     },
     [dispatch]
   );

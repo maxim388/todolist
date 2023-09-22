@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { FilterValuesType } from "../reducers/todolists-reducer";
-
+import { FC, memo } from "react";
 
 export type ButtonPropsType = {
   id: string;
@@ -10,8 +10,7 @@ export type ButtonPropsType = {
   changeFilter: (value: FilterValuesType, todolistId: string) => void;
 };
 
-export function MyButton(props: ButtonPropsType) {
-
+export const MyButton: FC<ButtonPropsType> = memo((props) => {
   const onAllClickHandler = () => props.changeFilter(props.title, props.id);
 
   return (
@@ -24,4 +23,4 @@ export function MyButton(props: ButtonPropsType) {
       {props.title}
     </Button>
   );
-}
+});
