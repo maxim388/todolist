@@ -14,6 +14,7 @@ import {
   todolistsAPI,
 } from "../../api/todolists-api";
 import { AppThunkType } from "../store";
+import { processingErrorTC, setStatusAC } from "./app-reducer";
 
 const REMOVE_TASK = "REMOVE_TASK";
 const ADD_TASK = "ADD_TASK";
@@ -37,11 +38,11 @@ export const tasksReducer = (
         [action.todolist.id]: [],
       };
     case SET_TODOLISTS:
-    const copyState = { ...state };
-    action.todolists.forEach((tl) => {
-      copyState[tl.id] = [];
-    });
-    return copyState;
+      const copyState = { ...state };
+      action.todolists.forEach((tl) => {
+        copyState[tl.id] = [];
+      });
+      return copyState;
     case UPDATE_TASK:
       return {
         ...state,
@@ -130,10 +131,17 @@ export const addTaskTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       const res = await todolistsAPI.createTask(todolistId, taskTitle);
-      dispatch(addTaskAC(res.data.data.item)); //fix data.data
-    } catch (e) {
-      console.log(e);
+      if (res.data.resultCode === 0) {
+        const task = res.data.data.item; //fix data.data
+        dispatch(addTaskAC(task));
+        dispatch(setStatusAC("succeeded"));
+      } else {
+        throw new Error(res.data.messages[0]);
+      }
+    } catch (e: unknown) {
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -141,10 +149,12 @@ export const addTaskTC = (
 export const fetchTasksTC = (todolistId: string): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       const res = await todolistsAPI.getTasks(todolistId);
       dispatch(setTasksAC(todolistId, res.data.items)); //fix
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -180,10 +190,12 @@ export const updateTaskTC = (
       ...domainModel,
     };
     try {
+      dispatch(setStatusAC("loading"));
       await todolistsAPI.updateTask(todolistId, taskId, apiModel);
       dispatch(updateTaskAC(todolistId, taskId, domainModel));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -194,10 +206,12 @@ export const removeTaskTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       await todolistsAPI.deleteTask(todolistId, taskId);
       dispatch(removeTaskAC(todolistId, taskId));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };

@@ -1,5 +1,6 @@
 import { TodolistTypeAPI, todolistsAPI } from "../../api/todolists-api";
 import { AppThunkType } from "../store";
+import { processingErrorTC, setStatusAC } from "./app-reducer";
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
@@ -50,13 +51,11 @@ export type TodolistsActionsType =
   | ChangeTodolistFilterACType
   | RemoveTodolistACType;
 
-
 export type AddTodolistACType = ReturnType<typeof addTodolistAC>;
 export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>;
 type ChangeTodolistTitleACType = ReturnType<typeof changeTodolistTitleAC>;
 type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>;
 export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>;
-
 
 export const addTodolistAC = (todolist: TodolistTypeAPI) => {
   return {
@@ -91,14 +90,15 @@ export const removeTodolistAC = (todolistId: string) => {
   return { type: REMOVE_TODOLIST, todolistId } as const;
 };
 
-
 export const addTodolistTC = (todolistTitle: string): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       const res = await todolistsAPI.createTodolist(todolistTitle); //fix rename createTodolist - addTodolistTC (add|create)
       dispatch(addTodolistAC(res.data.data.item)); //fix data.data
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -106,10 +106,12 @@ export const addTodolistTC = (todolistTitle: string): AppThunkType => {
 export const fetchTodolistsTC = (): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       const res = await todolistsAPI.getTodolists();
       dispatch(setTodolistsAC(res.data));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -120,10 +122,12 @@ export const changeTodolistTitleTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       await todolistsAPI.updateTodolistTitle(todolistId, title);
       dispatch(changeTodolistTitleAC(todolistId, title));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -134,9 +138,11 @@ export const changeTodolistFilterTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       dispatch(changeTodolistFilterAC(todolistId, filter));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };
@@ -144,10 +150,12 @@ export const changeTodolistFilterTC = (
 export const removeTodolistTC = (todolistId: string): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setStatusAC("loading"));
       await todolistsAPI.deleteTodolist(todolistId);
       dispatch(removeTodolistAC(todolistId));
+      dispatch(setStatusAC("succeeded"));
     } catch (e) {
-      console.log(e);
+      dispatch(processingErrorTC(e));
     }
   };
 };

@@ -84,9 +84,12 @@ const initialGlobalState = {
       },
     ],
   },
+  app: {
+    status: "loading",
+    error: null,
+  },
 };
 
-// export const storyBookStore = legacy_createStore(rootReducer);
 export const storyBookStore = legacy_createStore(
   rootReducer,
   initialGlobalState as AppRootStateType
