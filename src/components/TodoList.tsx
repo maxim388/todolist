@@ -10,8 +10,8 @@ import {
   changeTodolistFilterTC,
   changeTodolistTitleTC,
   removeTodolistTC,
-} from "../reducers/todolists-reducer";
-import { addTaskTC, fetchTasksTC } from "../reducers/tasks-reducer";
+} from "../store/reducers/todolists-reducer";
+import { addTaskTC, fetchTasksTC } from "../store/reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TodoTaskStatus } from "../api/todolists-api";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";

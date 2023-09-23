@@ -3,11 +3,11 @@ import {
   combineReducers,
   createStore,
 } from "redux";
-import { TasksActionsType, tasksReducer } from "../reducers/tasks-reducer";
+import { TasksActionsType, tasksReducer } from "./reducers/tasks-reducer";
 import {
   TodolistsActionsType,
   todolistsReducer,
-} from "../reducers/todolists-reducer";
+} from "./reducers/todolists-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 // import { configureStore } from "@reduxjs/toolkit";
 

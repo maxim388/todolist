@@ -12,8 +12,8 @@ import {
   TodoTaskStatus,
   UpdateTaskModelType,
   todolistsAPI,
-} from "../api/todolists-api";
-import { AppThunkType } from "../store/store";
+} from "../../api/todolists-api";
+import { AppThunkType } from "../store";
 
 const REMOVE_TASK = "REMOVE_TASK";
 const ADD_TASK = "ADD_TASK";

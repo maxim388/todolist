@@ -15,7 +15,7 @@ import {
   FilterValuesType,
   addTodolistTC,
   fetchTodolistsTC,
-} from "./reducers/todolists-reducer";
+} from "./store/reducers/todolists-reducer";
 import { Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 

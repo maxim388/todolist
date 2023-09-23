@@ -11,7 +11,7 @@ import {
   tasksReducer,
   updateTaskAC,
 } from "./tasks-reducer";
-import { TodoTaskPriority, TodoTaskStatus } from "../api/todolists-api";
+import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
 
 let startState: TodolistOfTasksType;
 

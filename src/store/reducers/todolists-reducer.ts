@@ -1,5 +1,5 @@
-import { TodolistTypeAPI, todolistsAPI } from "../api/todolists-api";
-import { AppThunkType } from "../store/store";
+import { TodolistTypeAPI, todolistsAPI } from "../../api/todolists-api";
+import { AppThunkType } from "../store";
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
