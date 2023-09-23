@@ -3,11 +3,7 @@ import { EditableSpan } from "./EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import {
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskTC,
-} from "../reducers/tasks-reducer";
+import { updateTaskTC, removeTaskTC } from "../reducers/tasks-reducer";
 import { TaskTypeAPI } from "../api/todolists-api";
 import { useAppDispatch } from "../app/hooks";
 
@@ -25,12 +21,12 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const checked = Number(e.currentTarget.checked);
-    dispatch(changeTaskStatusAC(todolistId, task.id, checked));
+    dispatch(updateTaskTC(todolistId, task.id, { status: checked }));
   };
 
   const onChangeTitleHandler = useCallback(
     (newValue: string) => {
-      dispatch(changeTaskTitleAC(todolistId, task.id, newValue));
+      dispatch(updateTaskTC(todolistId, task.id, { title: newValue }));
     },
     [dispatch, task.id, todolistId]
   );

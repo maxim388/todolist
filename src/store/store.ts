@@ -9,7 +9,7 @@ import {
   todolistsReducer,
 } from "../reducers/todolists-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { configureStore } from "@reduxjs/toolkit";
+// import { configureStore } from "@reduxjs/toolkit";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
