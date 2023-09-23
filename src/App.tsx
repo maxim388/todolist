@@ -19,7 +19,7 @@ import { Box, LinearProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { ErrorSnackbar } from "./components/ErrorSnackbar";
 
-export function App() {
+export function App({ demo = true }) {
   const dispatch = useAppDispatch();
   const todolists = useAppSelector((state) => state.todolists);
   const appStatus = useAppSelector((state) => state.app.status);
@@ -56,11 +56,11 @@ export function App() {
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
-        {appStatus === "loading" && <LinearProgress color="secondary"/>}
+        {appStatus === "loading" && <LinearProgress color="secondary" />}
       </AppBar>
       <Container fixed>
         <Grid container style={{ padding: "20px" }}>
-          <AddItemForm addItem={addTodoList} />
+          <AddItemForm addItem={addTodoList}/>
         </Grid>
         <Grid container spacing={3}>
           {todolists.map((tl) => {
@@ -71,6 +71,7 @@ export function App() {
                     key={tl.id}
                     todolist={tl}
                     arrTitleFilter={arrTitleFilter}
+                    demo={demo}
                   />
                 </Paper>
               </Grid>

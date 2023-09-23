@@ -18,7 +18,7 @@ export type TodolistTypeAPI = {
 type DataType = {
   item: TodolistTypeAPI;
 };
-type ResponceType<D = {}> = {
+export type ResponseType<D = {}> = {
   data: D;
   messages: string[];
   fieldsErrors: string[];
@@ -92,15 +92,15 @@ export const todolistsAPI: TodolistsAPIType = {
     return instance.get<TodolistTypeAPI[]>(`todo-lists`);
   },
   createTodolist(title: string) {
-    return instance.post<ResponceType<DataType>>(`todo-lists`, {
+    return instance.post<ResponseType<DataType>>(`todo-lists`, {
       title: title,
     });
   },
   deleteTodolist(id: string) {
-    return instance.delete<ResponceType>(`todo-lists/${id}`);
+    return instance.delete<ResponseType>(`todo-lists/${id}`);
   },
   updateTodolistTitle(id: string, title: string) {
-    return instance.put<ResponceType>(`todo-lists/${id}`, {
+    return instance.put<ResponseType>(`todo-lists/${id}`, {
       title: title,
     });
   },
@@ -108,17 +108,17 @@ export const todolistsAPI: TodolistsAPIType = {
     return instance.get<GetTaskResponceType>(`todo-lists/${todolistId}/tasks`);
   },
   createTask(todolistId: string, taskTitle: string) {
-    return instance.post<ResponceType>(`todo-lists/${todolistId}/tasks/`, { 
+    return instance.post<ResponseType>(`todo-lists/${todolistId}/tasks/`, { 
       title: taskTitle,
     });
   },
   deleteTask(todolistId: string, taskId: string) {
-    return instance.delete<ResponceType>(
+    return instance.delete<ResponseType>(
       `todo-lists/${todolistId}/tasks/${taskId}`
     );
   },
   updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-    return instance.put<ResponceType>(
+    return instance.put<ResponseType>(
       `todo-lists/${todolistId}/tasks/${taskId}`,
       model
     );

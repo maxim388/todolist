@@ -1,9 +1,9 @@
 import { AppThunkType } from "../store";
 
-const SET_STATUS = "App/SET_STATUS";
-const SET_ERROR = "App/SET_ERROR";
+const SET_APP_STATUS = "SET_APP_STATUS";
+const SET_APP_ERROR = "SET_APP_ERROR";
 
-type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
+export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 export type InitialStateType = {
   status: RequestStatusType;
@@ -20,41 +20,29 @@ export const appReducer = (
   action: ActionsType
 ): InitialStateType => {
   switch (action.type) {
-    case SET_STATUS:
+    case SET_APP_STATUS:
       return { ...state, status: action.status };
-    case SET_ERROR:
+    case SET_APP_ERROR:
       return { ...state, error: action.error };
     default:
       return state;
   }
 };
 
-export type ActionsType = SetStatusACType | SetErrorACType;
+export type ActionsType = SetAppStatusACType | SetAppErrorACType;
 
-type SetStatusACType = ReturnType<typeof setStatusAC>;
-export type SetErrorACType = ReturnType<typeof setErrorAC>;
+export type SetAppStatusACType = ReturnType<typeof setAppStatusAC>;
+export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>;
 
-export const setStatusAC = (status: RequestStatusType) => {
+export const setAppStatusAC = (status: RequestStatusType) => {
   return {
-    type: SET_STATUS,
+    type: SET_APP_STATUS,
     status,
   } as const;
 };
-export const setErrorAC = (error: string | null) => {
+export const setAppErrorAC = (error: string | null) => {
   return {
-    type: SET_ERROR,
+    type: SET_APP_ERROR,
     error,
   } as const;
-};
-
-export const processingErrorTC = (e: unknown): AppThunkType => {
-  return (dispatch) => {
-    if (e instanceof Error && e.message) {
-      dispatch(setErrorAC(e.message));
-    } else {
-      dispatch(setErrorAC("Some error occurred"));
-      console.log(e);
-    }
-    dispatch(setStatusAC("failed"));
-  };
 };

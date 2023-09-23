@@ -14,7 +14,8 @@ import {
   todolistsAPI,
 } from "../../api/todolists-api";
 import { AppThunkType } from "../store";
-import { processingErrorTC, setStatusAC } from "./app-reducer";
+import { setAppStatusAC } from "./app-reducer";
+import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 
 const REMOVE_TASK = "REMOVE_TASK";
 const ADD_TASK = "ADD_TASK";
@@ -131,17 +132,17 @@ export const addTaskTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
-      dispatch(setStatusAC("loading"));
+      dispatch(setAppStatusAC("loading"));
       const res = await todolistsAPI.createTask(todolistId, taskTitle);
       if (res.data.resultCode === 0) {
         const task = res.data.data.item; //fix data.data
         dispatch(addTaskAC(task));
-        dispatch(setStatusAC("succeeded"));
+        dispatch(setAppStatusAC("succeeded"));
       } else {
         throw new Error(res.data.messages[0]);
       }
-    } catch (e: unknown) {
-      dispatch(processingErrorTC(e));
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
     }
   };
 };
@@ -149,12 +150,12 @@ export const addTaskTC = (
 export const fetchTasksTC = (todolistId: string): AppThunkType => {
   return async (dispatch) => {
     try {
-      dispatch(setStatusAC("loading"));
+      dispatch(setAppStatusAC("loading"));
       const res = await todolistsAPI.getTasks(todolistId);
       dispatch(setTasksAC(todolistId, res.data.items)); //fix
-      dispatch(setStatusAC("succeeded"));
-    } catch (e) {
-      dispatch(processingErrorTC(e));
+      dispatch(setAppStatusAC("succeeded"));
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
     }
   };
 };
@@ -190,12 +191,16 @@ export const updateTaskTC = (
       ...domainModel,
     };
     try {
-      dispatch(setStatusAC("loading"));
-      await todolistsAPI.updateTask(todolistId, taskId, apiModel);
-      dispatch(updateTaskAC(todolistId, taskId, domainModel));
-      dispatch(setStatusAC("succeeded"));
-    } catch (e) {
-      dispatch(processingErrorTC(e));
+      dispatch(setAppStatusAC("loading"));
+      const res = await todolistsAPI.updateTask(todolistId, taskId, apiModel);
+      if (res.data.resultCode === 0) {
+        dispatch(updateTaskAC(todolistId, taskId, domainModel));
+        dispatch(setAppStatusAC("succeeded"));
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
     }
   };
 };
@@ -206,12 +211,12 @@ export const removeTaskTC = (
 ): AppThunkType => {
   return async (dispatch) => {
     try {
-      dispatch(setStatusAC("loading"));
+      dispatch(setAppStatusAC("loading"));
       await todolistsAPI.deleteTask(todolistId, taskId);
       dispatch(removeTaskAC(todolistId, taskId));
-      dispatch(setStatusAC("succeeded"));
-    } catch (e) {
-      dispatch(processingErrorTC(e));
+      dispatch(setAppStatusAC("succeeded"));
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
     }
   };
 };
