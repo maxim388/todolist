@@ -29,12 +29,12 @@ export const todolistsReducer = (
     case SET_TODOLISTS:
       return action.todolists;
     case CHANGE_TODOLIST_TITLE:
-      return state.map((t) =>
-        t.id === action.todolistId ? { ...t, title: action.title } : t
+      return state.map((tl) =>
+        tl.id === action.todolistId ? { ...tl, title: action.title } : tl
       );
     case CHANGE_TODOLIST_FILTER:
-      return state.map((t) =>
-        t.id === action.todolistId ? { ...t, filter: action.filter } : t
+      return state.map((tl) =>
+        tl.id === action.todolistId ? { ...tl, filter: action.filter } : tl
       );
     case REMOVE_TODOLIST:
       return state.filter((t) => t.id !== action.todolistId);
@@ -42,6 +42,7 @@ export const todolistsReducer = (
       return state;
   }
 };
+
 export type TodolistsActionsType =
   | AddTodolistACType
   | SetTodolistsACType
@@ -63,14 +64,12 @@ export const addTodolistAC = (todolist: TodolistTypeAPI) => {
     todolist,
   } as const;
 };
-
 export const setTodolistsAC = (todolists: TodolistDomainType[]) => {
   return {
     type: SET_TODOLISTS,
     todolists,
   } as const;
 };
-
 export const changeTodolistTitleAC = (todolistId: string, title: string) => {
   return {
     type: CHANGE_TODOLIST_TITLE,
@@ -78,7 +77,6 @@ export const changeTodolistTitleAC = (todolistId: string, title: string) => {
     title,
   } as const;
 };
-
 export const changeTodolistFilterAC = (
   todolistId: string,
   filter: FilterValuesType
@@ -89,7 +87,6 @@ export const changeTodolistFilterAC = (
     filter,
   } as const;
 };
-
 export const removeTodolistAC = (todolistId: string) => {
   return { type: REMOVE_TODOLIST, todolistId } as const;
 };

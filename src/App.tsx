@@ -17,7 +17,7 @@ import {
   fetchTodolistsTC,
 } from "./reducers/todolists-reducer";
 import { Box } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 
 export function App() {
   const dispatch = useAppDispatch();

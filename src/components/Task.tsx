@@ -5,7 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
 import { updateTaskTC, removeTaskTC } from "../reducers/tasks-reducer";
 import { TaskTypeAPI } from "../api/todolists-api";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../hooks/hooks";
 
 export type TaskPropsType = {
   todolistId: string;

@@ -37,11 +37,11 @@ export const tasksReducer = (
         [action.todolist.id]: [],
       };
     case SET_TODOLISTS:
-      const copyState = { ...state };
-      action.todolists.forEach((tl) => {
-        copyState[tl.id] = [];
-      });
-      return copyState;
+    const copyState = { ...state };
+    action.todolists.forEach((tl) => {
+      copyState[tl.id] = [];
+    });
+    return copyState;
     case UPDATE_TASK:
       return {
         ...state,
@@ -50,9 +50,8 @@ export const tasksReducer = (
         ),
       };
     case REMOVE_TODOLIST:
-      const stateCopy = { ...state };
-      delete stateCopy[action.todolistId];
-      return stateCopy;
+      const { [action.todolistId]: _, ...newState } = state;
+      return newState;
     case ADD_TASK:
       return {
         ...state,
@@ -98,7 +97,6 @@ export const addTaskAC = (task: TaskTypeAPI) => {
     task,
   } as const;
 };
-
 export const setTasksAC = (todolistId: string, tasks: TaskTypeAPI[]) => {
   return {
     type: SET_TASKS,
@@ -106,7 +104,6 @@ export const setTasksAC = (todolistId: string, tasks: TaskTypeAPI[]) => {
     tasks,
   } as const;
 };
-
 export const updateTaskAC = (
   todolistId: string,
   taskId: string,
@@ -119,7 +116,6 @@ export const updateTaskAC = (
     property,
   } as const;
 };
-
 export const removeTaskAC = (todolistId: string, taskId: string) => {
   return {
     type: REMOVE_TASK,

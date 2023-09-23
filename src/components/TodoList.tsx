@@ -14,7 +14,7 @@ import {
 import { addTaskTC, fetchTasksTC } from "../reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TodoTaskStatus } from "../api/todolists-api";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 export type TodolistPropsType = {
   todolist: TodolistDomainType;
