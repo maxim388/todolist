@@ -7,28 +7,30 @@ import { Task } from "./Task";
 import {
   FilterValuesType,
   TodolistDomainType,
-  changeTodolistFilterAC,
-  changeTodolistTitleAC,
+  changeTodolistFilterTC,
+  changeTodolistTitleTC,
   removeTodolistTC,
-} from "../reducers/todolists-reducer";
-import { addTaskAC, addTaskTC, fetchTasksTC } from "../reducers/tasks-reducer";
+} from "../store/reducers/todolists-reducer";
+import { addTaskTC, fetchTasksTC } from "../store/reducers/tasks-reducer";
 import { AddItemForm } from "./AddItemForm";
 import { TodoTaskStatus } from "../api/todolists-api";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 export type TodolistPropsType = {
   todolist: TodolistDomainType;
   arrTitleFilter: FilterValuesType[];
+  demo?: boolean;
 };
 
 export const Todolist: FC<TodolistPropsType> = memo(
-  ({ todolist, arrTitleFilter }) => {
+  ({ todolist, arrTitleFilter, demo }) => {
     const dispatch = useAppDispatch();
     const tasks = useAppSelector((state) => state.tasks[todolist.id]);
 
     useEffect(() => {
+      if (demo) return; //clear in build
       dispatch(fetchTasksTC(todolist.id));
-    }, [dispatch, todolist.id]);
+    }, [dispatch, todolist.id, demo]);
 
     const removeTodolist = useCallback(() => {
       dispatch(removeTodolistTC(todolist.id));
@@ -36,7 +38,7 @@ export const Todolist: FC<TodolistPropsType> = memo(
 
     const changeTodolistTitle = useCallback(
       (newTodolistTitle: string) => {
-        dispatch(changeTodolistTitleAC(todolist.id, newTodolistTitle));
+        dispatch(changeTodolistTitleTC(todolist.id, newTodolistTitle));
       },
       [dispatch, todolist.id]
     );
@@ -50,7 +52,7 @@ export const Todolist: FC<TodolistPropsType> = memo(
 
     const changeFilter = useCallback(
       (filter: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodolistFilterAC(todolistId, filter));
+        dispatch(changeTodolistFilterTC(todolistId, filter));
       },
       [dispatch]
     );
@@ -68,9 +70,16 @@ export const Todolist: FC<TodolistPropsType> = memo(
       <div>
         <h3>
           <EditableSpan title={todolist.title} onChange={changeTodolistTitle} />
-          <Button onClick={removeTodolist} startIcon={<Delete />}></Button>
+          <Button
+            onClick={removeTodolist}
+            disabled={todolist.entityStatus === "loading"}
+            startIcon={<Delete />}
+          ></Button>
         </h3>
-        <AddItemForm addItem={addTask} />
+        <AddItemForm
+          addItem={addTask}
+          disabled={todolist.entityStatus === "loading"}
+        />
         <div>
           {tasksForTodolist.map((t) => {
             return <Task key={t.id} todolistId={todolist.id} task={t} />;

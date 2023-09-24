@@ -1,3 +1,13 @@
 //todolist change filter Completed - it's wrong (empty)
 //SET_TODOLISTS - fix mutation state
-//AppThunkType
+//updateTaskAC change title on every letters - fix (heaps request)
+// fix rename createTodolist - addTodolistTC (add|create)
+// COMPLETED task not show
+// fix CHANGE_TODOLIST_TITLE |CHANGE_TODOLIST_FILTER --> updateTOdolist
+//LinearProgress - fix подергиваний
+//demo -remove in code
+//handleServerAppError -use to
+
+Добавьте обработку ошибок во всех санках
+По аналогии с пунктом 8 добавьте возможность задизейблить EditableSpan, чтобы когда disabled=true, он не мог перейти в состояние editable
+Добавьте по аналогии с TodolistDomainType в TaskType св-во entityStatus, и сделайте блокировку таски, в случае её обновления\изменения\удаления
