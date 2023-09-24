@@ -135,11 +135,11 @@ export const addTaskTC = (
       dispatch(setAppStatusAC("loading"));
       const res = await todolistsAPI.createTask(todolistId, taskTitle);
       if (res.data.resultCode === 0) {
-        const task = res.data.data.item; //fix data.data
+        const task = res.data.data.item;
         dispatch(addTaskAC(task));
         dispatch(setAppStatusAC("succeeded"));
       } else {
-        throw new Error(res.data.messages[0]);
+        handleServerAppError(res.data, dispatch);
       }
     } catch (error) {
       handleServerNetworkError(error, dispatch);

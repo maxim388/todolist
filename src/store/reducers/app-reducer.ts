@@ -1,5 +1,3 @@
-import { AppThunkType } from "../store";
-
 const SET_APP_STATUS = "SET_APP_STATUS";
 const SET_APP_ERROR = "SET_APP_ERROR";
 
