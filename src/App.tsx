@@ -65,7 +65,7 @@ export function App({ demo = true }) {
         <Grid container spacing={3}>
           {todolists.map((tl) => {
             return (
-              <Grid item>
+              <Grid item key={tl.id}>
                 <Paper style={{ padding: "10px" }}>
                   <Todolist
                     key={tl.id}
