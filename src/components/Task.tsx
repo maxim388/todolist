@@ -28,7 +28,7 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
     (newValue: string) => {
       dispatch(updateTaskTC(todolistId, task.id, { title: newValue }));
     },
-    [dispatch, task.id, todolistId]
+    [task.id, todolistId]
   );
 
   return (

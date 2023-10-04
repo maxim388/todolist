@@ -1,9 +1,10 @@
 import { FC, memo, useCallback, useEffect } from "react";
-import { FilterValuesType } from "../store/reducers/todolists-reducer";
-import { useAppSelector } from "../hooks/hooks";
+import { FilterValuesType, fetchTodolistsTC } from "../store/reducers/todolists-reducer";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./TodoList";
 import { AddItemForm } from "./AddItemForm";
+import { Navigate } from "react-router-dom";
 
 let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 type TodolistsListPropsType = {
@@ -11,8 +12,22 @@ type TodolistsListPropsType = {
   addTodoList: (title: string) => void;
 };
 
-export const TodolistsList: FC<TodolistsListPropsType> = ({ demo, addTodoList }) => {
+export const TodolistsList: FC<TodolistsListPropsType> = ({
+  demo,
+  addTodoList,
+}) => {
+  const dispatch = useAppDispatch();
   const todolists = useAppSelector((state) => state.todolists);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    dispatch(fetchTodolistsTC());
+  }, []);
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <>
       <Grid container style={{ padding: "20px" }}>

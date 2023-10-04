@@ -16,28 +16,39 @@ import { ErrorSnackbar } from "./components/ErrorSnackbar";
 import { TodolistsList } from "./components/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./components/Login";
+import { initializeAppTC } from "./store/reducers/app-reducer";
+import { logoutTC } from "./store/reducers/auth-reducer";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
   const appStatus = useAppSelector((state) => state.app.status);
   const appIsInitialized = useAppSelector((state) => state.app.isInitialized);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   // let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
   useEffect(() => {
-    dispatch(fetchTodolistsTC());
-  }, [dispatch]);
+    dispatch(initializeAppTC());
+  }, []);
 
-  const addTodoList = useCallback(
-    (title: string) => {
-      dispatch(addTodolistTC(title));
-    },
-    [dispatch]
-  );
+  const addTodoList = useCallback((title: string) => {
+    dispatch(addTodolistTC(title));
+  }, []);
+  const logoutHandler = useCallback(() => {
+    dispatch(logoutTC());
+  }, []);
+  
   if (!appIsInitialized) {
     return (
       // fix style
-      <div style={{ position: "fixed", top: "30%", textAlign: "center" , width: "100%"}}> 
+      <div
+        style={{
+          position: "fixed",
+          top: "30%",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
         <CircularProgress />
       </div>
     );
@@ -59,7 +70,11 @@ export function App({ demo = true }) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          {isLoggedIn && (
+            <Button color="inherit" onClick={logoutHandler}>
+              Log out
+            </Button>
+          )}
         </Toolbar>
         {appStatus === "loading" && <LinearProgress color="secondary" />}
       </AppBar>

@@ -93,6 +93,8 @@ export type LoginParamsType = {
 };
 type authAPIType = {
   login: (data: LoginParamsType) => Promise<AxiosResponse<any, any>>;
+  logout: () => Promise<AxiosResponse<any, any>>;
+  me: () => Promise<AxiosResponse<any, any>>;
 };
 
 //API
@@ -137,5 +139,13 @@ export const todolistsAPI: TodolistsAPIType = {
 export const authAPI: authAPIType = {
   login(data: LoginParamsType) {
     return instance.post<ResponseType<{ userId?: number }>>(`auth/login`, data);
+  },
+  logout() {
+    return instance.delete<ResponseType<{ userId?: number }>>(`auth/login`);
+  },
+  me() {
+    return instance.get<
+      ResponseType<{ id: number; email: string; login: string }>
+    >(`auth/me`);
   },
 };

@@ -48,10 +48,24 @@ export const loginTC = (data: LoginParamsType): AppThunkType => {
     try {
       dispatch(setAppStatusAC("loading"));
       const res = await authAPI.login({ email, password, rememberMe });
-      debugger;
       if (res.data.resultCode === 0) {
-        debugger;
         dispatch(setIsLoggedInAC(true));
+      } else {
+        handleServerAppError(res.data, dispatch);
+      }
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
+    }
+  };
+};
+
+export const logoutTC = (): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      dispatch(setAppStatusAC("loading"));
+      const res = await authAPI.logout();
+      if (res.data.resultCode === 0) {
+        dispatch(setIsLoggedInAC(false));
       } else {
         handleServerAppError(res.data, dispatch);
       }

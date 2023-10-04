@@ -1,4 +1,7 @@
+import { authAPI } from "../../api/todolists-api";
+import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { AppThunkType } from "../store";
+import { setIsLoggedInAC } from "./auth-reducer";
 
 const SET_APP_STATUS = "app/SET_APP_STATUS";
 const SET_APP_ERROR = "app/SET_APP_ERROR";
@@ -27,15 +30,24 @@ export const appReducer = (
       return { ...state, status: action.status };
     case SET_APP_ERROR:
       return { ...state, error: action.error };
+    case SET_APP_INITIALIZED:
+      return {
+        ...state,
+        isInitialized: action.value,
+      };
     default:
       return state;
   }
 };
 
-export type ActionsType = SetAppStatusACType | SetAppErrorACType;
+export type ActionsType =
+  | SetAppStatusACType
+  | SetAppErrorACType
+  | SetAppInitializedACType;
 
 export type SetAppStatusACType = ReturnType<typeof setAppStatusAC>;
 export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>;
+export type SetAppInitializedACType = ReturnType<typeof setAppInitializedAC>;
 
 export const setAppStatusAC = (status: RequestStatusType) => {
   return {
@@ -57,7 +69,17 @@ export const setAppInitializedAC = (value: boolean) => {
 };
 
 export const initializeAppTC = (): AppThunkType => {
-  return (dispatch) => {
-
+  return async (dispatch) => {
+    try {
+      const res = await authAPI.me()
+      if (res.data.resultCode === 0) {
+        dispatch(setIsLoggedInAC(true));
+      } else {
+        handleServerAppError(res.data, dispatch);
+      }
+      dispatch(setAppInitializedAC(true));
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
+    }
   };
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
@@ -35,7 +35,6 @@ export const Login = () => {
       rememberMe: false,
     },
     onSubmit: (values) => {
-      debugger;
       dispatch(loginTC(values));
     },
   });
