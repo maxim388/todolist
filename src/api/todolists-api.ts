@@ -85,6 +85,15 @@ type TodolistsAPIType = {
     model: UpdateTaskModelType
   ) => Promise<AxiosResponse<any, any>>;
 };
+export type LoginParamsType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha?: string;
+};
+type authAPIType = {
+  login: (data: LoginParamsType) => Promise<AxiosResponse<any, any>>;
+};
 
 //API
 export const todolistsAPI: TodolistsAPIType = {
@@ -108,7 +117,7 @@ export const todolistsAPI: TodolistsAPIType = {
     return instance.get<GetTaskResponceType>(`todo-lists/${todolistId}/tasks`);
   },
   createTask(todolistId: string, taskTitle: string) {
-    return instance.post<ResponseType>(`todo-lists/${todolistId}/tasks/`, { 
+    return instance.post<ResponseType>(`todo-lists/${todolistId}/tasks/`, {
       title: taskTitle,
     });
   },
@@ -122,5 +131,11 @@ export const todolistsAPI: TodolistsAPIType = {
       `todo-lists/${todolistId}/tasks/${taskId}`,
       model
     );
+  },
+};
+
+export const authAPI: authAPIType = {
+  login(data: LoginParamsType) {
+    return instance.post<ResponseType<{ userId?: number }>>(`auth/login`, data);
   },
 };

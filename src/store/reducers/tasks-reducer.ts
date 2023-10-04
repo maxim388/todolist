@@ -17,10 +17,10 @@ import { AppThunkType } from "../store";
 import { setAppStatusAC } from "./app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 
-const REMOVE_TASK = "REMOVE_TASK";
-const ADD_TASK = "ADD_TASK";
-const UPDATE_TASK = "UPDATE_TASK";
-const SET_TASKS = "SET_TASKS";
+const REMOVE_TASK = "tasks/REMOVE_TASK";
+const ADD_TASK = "tasks/ADD_TASK";
+const UPDATE_TASK = "tasks/UPDATE_TASK";
+const SET_TASKS = "tasks/SET_TASKS";
 
 const initialState: TodolistOfTasksType = {};
 

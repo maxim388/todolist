@@ -1,16 +1,21 @@
-const SET_APP_STATUS = "SET_APP_STATUS";
-const SET_APP_ERROR = "SET_APP_ERROR";
+import { AppThunkType } from "../store";
+
+const SET_APP_STATUS = "app/SET_APP_STATUS";
+const SET_APP_ERROR = "app/SET_APP_ERROR";
+const SET_APP_INITIALIZED = "app/SET_APP_INITIALIZED";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 export type InitialStateType = {
   status: RequestStatusType;
   error: string | null;
+  isInitialized: boolean;
 };
 
 const initialState: InitialStateType = {
-  status: "loading",
+  status: "idle",
   error: null,
+  isInitialized: false,
 };
 
 export const appReducer = (
@@ -43,4 +48,16 @@ export const setAppErrorAC = (error: string | null) => {
     type: SET_APP_ERROR,
     error,
   } as const;
+};
+export const setAppInitializedAC = (value: boolean) => {
+  return {
+    type: SET_APP_INITIALIZED,
+    value,
+  } as const;
+};
+
+export const initializeAppTC = (): AppThunkType => {
+  return (dispatch) => {
+
+  };
 };

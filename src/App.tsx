@@ -1,28 +1,26 @@
 import { useCallback, useEffect } from "react";
-import { AddItemForm } from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  FilterValuesType,
   addTodolistTC,
   fetchTodolistsTC,
 } from "./store/reducers/todolists-reducer";
-import { Box, LinearProgress } from "@mui/material";
+import { Box, CircularProgress, LinearProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { ErrorSnackbar } from "./components/ErrorSnackbar";
 import { TodolistsList } from "./components/TodolistsList";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "./components/Login";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
   const appStatus = useAppSelector((state) => state.app.status);
+  const appIsInitialized = useAppSelector((state) => state.app.isInitialized);
 
   // let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
@@ -36,7 +34,14 @@ export function App({ demo = true }) {
     },
     [dispatch]
   );
-
+  if (!appIsInitialized) {
+    return (
+      // fix style
+      <div style={{ position: "fixed", top: "30%", textAlign: "center" , width: "100%"}}> 
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ErrorSnackbar />
@@ -65,6 +70,8 @@ export function App({ demo = true }) {
             element={<TodolistsList demo={demo} addTodoList={addTodoList} />}
           />
           <Route path={"/login"} element={<Login />} />
+          <Route path={"/404"} element={<h1>404: PAGE NOT FOUND</h1>} />
+          <Route path={"*"} element={<Navigate to="/404" />} />
         </Routes>
       </Container>
     </Box>
