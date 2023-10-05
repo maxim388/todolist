@@ -18,15 +18,15 @@ const rootReducer = combineReducers({
   auth: authReducer,
 });
 // непосредственно создаём store
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+// export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+
 // export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
-// export const store = configureStore({
-//   reducer: {
-//     todolists: todolistsReducer,
-//     tasks: tasksReducer,
-//   },
-// });
+export const store = configureStore({
+  rootReducer: rootReducer,
+  applyMiddleware
+  
+});
 
 // определить автоматически тип всего объекта состояния
 // export type AppRootStateType = ReturnType<typeof rootReducer>;
