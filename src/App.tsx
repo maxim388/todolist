@@ -1,42 +1,58 @@
-import { Todolist } from "./components/TodoList";
 import { useCallback, useEffect } from "react";
-import { AddItemForm } from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  FilterValuesType,
   addTodolistTC,
   fetchTodolistsTC,
 } from "./store/reducers/todolists-reducer";
-import { Box, LinearProgress } from "@mui/material";
+import { Box, CircularProgress, LinearProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import { ErrorSnackbar } from "./components/ErrorSnackbar";
+import { TodolistsList } from "./components/TodolistsList";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Login } from "./components/Login";
+import { initializeAppTC } from "./store/reducers/app-reducer";
+import { logoutTC } from "./store/reducers/auth-reducer";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
-  const todolists = useAppSelector((state) => state.todolists);
   const appStatus = useAppSelector((state) => state.app.status);
+  const appIsInitialized = useAppSelector((state) => state.app.isInitialized);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
-  let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+  // let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
   useEffect(() => {
-    dispatch(fetchTodolistsTC());
-  }, [dispatch]);
+    dispatch(initializeAppTC());
+  }, []);
 
-  const addTodoList = useCallback(
-    (title: string) => {
-      dispatch(addTodolistTC(title));
-    },
-    [dispatch]
-  );
-
+  const addTodoList = useCallback((title: string) => {
+    dispatch(addTodolistTC(title));
+  }, []);
+  const logoutHandler = useCallback(() => {
+    dispatch(logoutTC());
+  }, []);
+  
+  if (!appIsInitialized) {
+    return (
+      // fix style
+      <div
+        style={{
+          position: "fixed",
+          top: "30%",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ErrorSnackbar />
@@ -54,30 +70,24 @@ export function App({ demo = true }) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          {isLoggedIn && (
+            <Button color="inherit" onClick={logoutHandler}>
+              Log out
+            </Button>
+          )}
         </Toolbar>
         {appStatus === "loading" && <LinearProgress color="secondary" />}
       </AppBar>
       <Container fixed>
-        <Grid container style={{ padding: "20px" }}>
-          <AddItemForm addItem={addTodoList}/>
-        </Grid>
-        <Grid container spacing={3}>
-          {todolists.map((tl) => {
-            return (
-              <Grid item>
-                <Paper style={{ padding: "10px" }}>
-                  <Todolist
-                    key={tl.id}
-                    todolist={tl}
-                    arrTitleFilter={arrTitleFilter}
-                    demo={demo}
-                  />
-                </Paper>
-              </Grid>
-            );
-          })}
-        </Grid>
+        <Routes>
+          <Route
+            path={"/"}
+            element={<TodolistsList demo={demo} addTodoList={addTodoList} />}
+          />
+          <Route path={"/login"} element={<Login />} />
+          <Route path={"/404"} element={<h1>404: PAGE NOT FOUND</h1>} />
+          <Route path={"*"} element={<Navigate to="/404" />} />
+        </Routes>
       </Container>
     </Box>
   );

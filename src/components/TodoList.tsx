@@ -30,31 +30,31 @@ export const Todolist: FC<TodolistPropsType> = memo(
     useEffect(() => {
       if (demo) return; //clear in build
       dispatch(fetchTasksTC(todolist.id));
-    }, [dispatch, todolist.id, demo]);
+    }, [todolist.id, demo]);
 
     const removeTodolist = useCallback(() => {
       dispatch(removeTodolistTC(todolist.id));
-    }, [dispatch, todolist.id]);
+    }, [todolist.id]);
 
     const changeTodolistTitle = useCallback(
       (newTodolistTitle: string) => {
         dispatch(changeTodolistTitleTC(todolist.id, newTodolistTitle));
       },
-      [dispatch, todolist.id]
+      [todolist.id]
     );
 
     const addTask = useCallback(
       (taskTitle: string) => {
         dispatch(addTaskTC(todolist.id, taskTitle));
       },
-      [dispatch, todolist.id]
+      [todolist.id]
     );
 
     const changeFilter = useCallback(
       (filter: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterTC(todolistId, filter));
       },
-      [dispatch]
+      []
     );
 
     let tasksForTodolist = tasks;

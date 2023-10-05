@@ -6,6 +6,7 @@ import {
 } from "./reducers/todolists-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { ActionsType, appReducer } from "./reducers/app-reducer";
+import { AuthActionsType, authReducer } from "./reducers/auth-reducer";
 // import { configureStore } from "@reduxjs/toolkit";
 
 // объединяя reducer-ы с помощью combineReducers,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   todolists: todolistsReducer,
   tasks: tasksReducer,
   app: appReducer,
+  auth: authReducer,
 });
 // непосредственно создаём store
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
@@ -39,7 +41,8 @@ export type AppDispatch = ThunkDispatch<
 export type AppActionsType =
   | TodolistsActionsType
   | TasksActionsType
-  | ActionsType;
+  | ActionsType
+  | AuthActionsType;
 
 export type AppThunkType<ReturnType = void> = ThunkAction<
   ReturnType,
