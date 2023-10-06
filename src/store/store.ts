@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { combineReducers } from "redux";
 import { TasksActionsType, tasksReducer } from "./reducers/tasks-reducer";
 import {
   TodolistsActionsType,
