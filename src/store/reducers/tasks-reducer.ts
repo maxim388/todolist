@@ -1,9 +1,6 @@
 import { action } from "@storybook/addon-actions";
 import {
-  REMOVE_TODOLIST,
   RemoveTodolistACType,
-  ADD_TODOLIST,
-  SET_TODOLISTS,
   SetTodolistsACType,
   AddTodolistACType,
   addTodolistAC,
@@ -24,11 +21,6 @@ import {
   handleServerNetworkError,
 } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-// const REMOVE_TASK = "tasks/REMOVE_TASK";
-// const ADD_TASK = "tasks/ADD_TASK";
-// const UPDATE_TASK = "tasks/UPDATE_TASK";
-// const SET_TASKS = "tasks/SET_TASKS";
 
 const initialState: TodolistOfTasksType = {};
 
@@ -93,57 +85,6 @@ export const tasksReducer = slice.reducer;
 export const { addTaskAC, setTasksAC, updateTaskAC, removeTaskAC } =
   slice.actions;
 
-// export const tasksReducer = (
-//   state: TodolistOfTasksType = initialState,
-//   action: TasksActionsType
-// ): TodolistOfTasksType => {
-//   switch (action.type) {
-//     case addTodolistAC.type:
-//       return {
-//         ...state,
-//         [action.payload.todolist.id]: [],
-//       };
-//     case setTodolistsAC.type:
-//       const copyState = { ...state };
-//       action.payload.todolists.forEach((tl) => {
-//         copyState[tl.id] = [];
-//       });
-//       return copyState;
-//     case UPDATE_TASK:
-//       return {
-//         ...state,
-//         [action.todolistId]: state[action.todolistId].map((t) =>
-//           t.id === action.taskId ? { ...t, ...action.property } : t
-//         ),
-//       };
-//     case removeTodolistAC.type:
-//       const { [action.payload.todolistId]: _, ...newState } = state;
-//       return newState;
-//     case ADD_TASK:
-//       return {
-//         ...state,
-//         [action.task.todoListId]: [
-//           action.task,
-//           ...state[action.task.todoListId],
-//         ],
-//       };
-//     case SET_TASKS:
-//       return {
-//         ...state,
-//         [action.todolistId]: action.tasks,
-//       };
-//     case REMOVE_TASK:
-//       return {
-//         ...state,
-//         [action.todolistId]: state[action.todolistId].filter(
-//           (t) => t.id !== action.taskId
-//         ),
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
 export type TasksActionsType =
   | AddTaskACType
   | SetTodolistsACType
@@ -157,39 +98,6 @@ type AddTaskACType = ReturnType<typeof addTaskAC>;
 type SetTasksACType = ReturnType<typeof setTasksAC>;
 type UpdateTaskACType = ReturnType<typeof updateTaskAC>;
 type RemoveTaskACType = ReturnType<typeof removeTaskAC>;
-
-// export const addTaskAC = (task: TaskTypeAPI) => {
-//   return {
-//     type: ADD_TASK,
-//     task,
-//   } as const;
-// };
-// export const setTasksAC = (todolistId: string, tasks: TaskTypeAPI[]) => {
-//   return {
-//     type: SET_TASKS,
-//     todolistId,
-//     tasks,
-//   } as const;
-// };
-// export const updateTaskAC = (
-//   todolistId: string,
-//   taskId: string,
-//   property: UpdateDomainTaskModelType
-// ) => {
-//   return {
-//     type: UPDATE_TASK,
-//     todolistId,
-//     taskId,
-//     property,
-//   } as const;
-// };
-// export const removeTaskAC = (todolistId: string, taskId: string) => {
-//   return {
-//     type: REMOVE_TASK,
-//     todolistId,
-//     taskId,
-//   } as const;
-// };
 
 export const addTaskTC = (
   todolistId: string,

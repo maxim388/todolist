@@ -1,5 +1,4 @@
-//todolist change filter Completed - it's wrong (empty)
-//SET_TODOLISTS - fix mutation state
+//todolist change filter Completed - its wrong (empty)
 //updateTaskAC change title on every letters - fix (heaps request)
 // fix rename createTodolist - addTodolistTC (add|create)
 // COMPLETED task not show
@@ -7,6 +6,8 @@
 //LinearProgress - fix подергиваний
 //demo -remove in code
 //handleServerAppError -use to
+//fix storybook stories App BrowserRouter HashRouter
+//fix rename createTodolist - addTodolistTC (add|create)
 
 Добавьте обработку ошибок во всех санках
 По аналогии с пунктом 8 добавьте возможность задизейблить EditableSpan, чтобы когда disabled=true, он не мог перейти в состояние editable
