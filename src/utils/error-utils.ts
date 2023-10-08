@@ -12,11 +12,11 @@ export const handleServerAppError = <T>(
   dispatch: ErrorUtilsDispatchType
 ) => {
   if (data.messages.length) {
-    dispatch(setAppErrorAC(data.messages[0]));
+    dispatch(setAppErrorAC({ error: data.messages[0] }));
   } else {
-    dispatch(setAppErrorAC("Some error occurred"));
+    dispatch(setAppErrorAC({ error: "Some error occurred" }));
   }
-  dispatch(setAppStatusAC("failed"));
+  dispatch(setAppStatusAC({ status: "failed" }));
 };
 
 export const handleServerNetworkError = (
@@ -25,9 +25,9 @@ export const handleServerNetworkError = (
 ) => {
   if (error instanceof Error && error.message) {
     // fix
-    dispatch(setAppErrorAC(error.message));
+    dispatch(setAppErrorAC({ error: error.message }));
   }
-  dispatch(setAppStatusAC("failed"));
+  dispatch(setAppStatusAC({ status: "failed" }));
 };
 
 type ErrorUtilsDispatchType = Dispatch<SetAppStatusACType | SetAppErrorACType>;

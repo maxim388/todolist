@@ -97,7 +97,7 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTaskAC("todolistId2", "2");
+  const action = removeTaskAC({ todolistId: "todolistId2", taskId: "2" });
 
   const endState = tasksReducer(startState, action);
 
@@ -171,16 +171,18 @@ test("correct task should be deleted from correct array", () => {
 
 test("correct task should be added to correct array", () => {
   const action = addTaskAC({
-    id: "1",
-    title: "juce",
-    description: "",
-    todoListId: "todolistId2",
-    order: 0,
-    status: TodoTaskStatus.New,
-    priority: TodoTaskPriority.Later,
-    startDate: "",
-    deadline: "",
-    addedDate: "",
+    task: {
+      id: "1",
+      title: "juce",
+      description: "",
+      todoListId: "todolistId2",
+      order: 0,
+      status: TodoTaskStatus.New,
+      priority: TodoTaskPriority.Later,
+      startDate: "",
+      deadline: "",
+      addedDate: "",
+    },
   });
 
   const endState = tasksReducer(startState, action);
@@ -193,7 +195,11 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-const action = updateTaskAC("todolistId2", "2", {status: TodoTaskStatus.New});
+  const action = updateTaskAC({
+    todolistId: "todolistId2",
+    taskId: "2",
+    property: { status: TodoTaskStatus.New },
+  });
 
   const endState = tasksReducer(startState, action);
 
@@ -202,13 +208,13 @@ const action = updateTaskAC("todolistId2", "2", {status: TodoTaskStatus.New});
 });
 
 test("new array should be added when new todolist is added", () => {
-  const todoloist = {
+  const todolist = {
     id: "string",
     title: "new todolist",
     addedDate: "string",
     order: 0,
   };
-  const action = addTodolistAC(todoloist);
+  const action = addTodolistAC({ todolist });
 
   const endState = tasksReducer(startState, action);
 
@@ -223,7 +229,7 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const action = removeTodolistAC("todolistId2");
+  const action = removeTodolistAC({ todolistId: "todolistId2" });
 
   const endState = tasksReducer(startState, action);
 
@@ -234,24 +240,26 @@ test("property with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-  const action = setTodolistsAC([
-    {
-      id: "1",
-      title: "title 1",
-      order: 0,
-      addedDate: "",
-      filter: "All",
-      entityStatus: "idle",
-    },
-    {
-      id: "2",
-      title: "title 2",
-      order: 0,
-      addedDate: "",
-      filter: "All",
-      entityStatus: "idle",
-    },
-  ]);
+  const action = setTodolistsAC({
+    todolists: [
+      {
+        id: "1",
+        title: "title 1",
+        order: 0,
+        addedDate: "",
+        filter: "All",
+        entityStatus: "idle",
+      },
+      {
+        id: "2",
+        title: "title 2",
+        order: 0,
+        addedDate: "",
+        filter: "All",
+        entityStatus: "idle",
+      },
+    ],
+  });
 
   const endState = tasksReducer({}, action);
 
@@ -263,7 +271,10 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const action = setTasksAC("todolistId1", startState["todolistId1"]);
+  const action = setTasksAC({
+    todolistId: "todolistId1",
+    tasks: startState["todolistId1"],
+  });
 
   const endState = tasksReducer(
     {

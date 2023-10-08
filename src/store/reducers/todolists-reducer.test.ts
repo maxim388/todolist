@@ -41,7 +41,10 @@ beforeEach(() => {
 });
 
 test("correct todolist should be removed", () => {
-  const endState = todolistsReducer(startState, removeTodolistAC(todolistId1));
+  const endState = todolistsReducer(
+    startState,
+    removeTodolistAC({ todolistId: todolistId1 })
+  );
 
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
@@ -54,7 +57,10 @@ test("correct todolist should be added", () => {
     addedDate: "string",
     order: 0,
   };
-  const endState = todolistsReducer(startState, addTodolistAC(todoloist));
+  const endState = todolistsReducer(
+    startState,
+    addTodolistAC({ todolist: todoloist })
+  );
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(todoloist.title);
@@ -65,7 +71,7 @@ test("correct todolist should change its name", () => {
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistTitleAC(todolistId2, newTodolistTitle)
+    changeTodolistTitleAC({ todolistId: todolistId2, title: newTodolistTitle })
   );
 
   expect(endState[0].title).toBe("What to learn");
@@ -77,7 +83,7 @@ test("correct filter of todolist should be changed", () => {
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistFilterAC(todolistId2, newFilter)
+    changeTodolistFilterAC({todolistId: todolistId2, filter: newFilter})
   );
 
   expect(endState[0].filter).toBe("All");
@@ -89,7 +95,7 @@ test("correct entity status of todolist should be changed", () => {
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistEntityStatusAC(todolistId2, newStatus)
+    changeTodolistEntityStatusAC({todolistId: todolistId2, status: newStatus})
   );
 
   expect(endState[0].entityStatus).toBe("idle");
@@ -97,7 +103,7 @@ test("correct entity status of todolist should be changed", () => {
 });
 
 test("todolists schould be set to the state", () => {
-  const action = setTodolistsAC(startState);
+  const action = setTodolistsAC({todolists: startState});
 
   const endState = todolistsReducer(startState, action);
 

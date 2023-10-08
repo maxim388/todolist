@@ -16,11 +16,14 @@ beforeEach(() => {
 });
 
 test("correct error message should be set", () => {
-  const endState = appReducer(startState, setAppErrorAC("some error"));
+  const endState = appReducer(
+    startState,
+    setAppErrorAC({ error: "some error" })
+  );
   expect(endState.error).toBe("some error");
 });
 
 test("correct status message should be set", () => {
-  const endState = appReducer(startState, setAppStatusAC("failed"));
+  const endState = appReducer(startState, setAppStatusAC({ status: "failed" }));
   expect(endState.status).toBe("failed");
 });
