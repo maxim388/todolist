@@ -6,8 +6,8 @@ import {
 import {
   TodolistOfTasksType,
   addTaskAC,
-  removeTaskAC,
-  setTasksAC,
+  fetchTasksTC,
+  removeTaskTC,
   tasksReducer,
   updateTaskAC,
 } from "./tasks-reducer";
@@ -97,7 +97,11 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTaskAC({ todolistId: "todolistId2", taskId: "2" });
+  const param = {
+    todolistId: "todolistId2",
+    taskId: "2",
+  };
+  const action = removeTaskTC.fulfilled(param, "", param);
 
   const endState = tasksReducer(startState, action);
 
@@ -271,10 +275,14 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const action = setTasksAC({
-    todolistId: "todolistId1",
-    tasks: startState["todolistId1"],
-  });
+  const action = fetchTasksTC.fulfilled(
+    {
+      todolistId: "todolistId1",
+      tasks: startState["todolistId1"],
+    },
+    "",
+    { todolistId: "todolistId1" }
+  );
 
   const endState = tasksReducer(
     {
