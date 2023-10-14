@@ -20,7 +20,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState: TodolistOfTasksType = {};
 
@@ -28,6 +28,24 @@ export type TodolistOfTasksType = {
   [key: string]: TaskTypeAPI[];
 };
 
+const fetchTasks = createAsyncThunk(
+  "tasks/fetchTasks",
+  (todolistId: string, thunkAPI) => {}
+);
+
+export const fetchTasksTC = (todolistId: string): AppThunkType => {
+  return async (dispatch) => {
+    try {
+      dispatch(setAppStatusAC({ status: "loading" }));
+      const res = await todolistsAPI.getTasks(todolistId);
+      dispatch(setTasksAC({ todolistId, tasks: res.data.items }));
+      dispatch(setAppStatusAC({ status: "succeeded" }));
+    } catch (error) {
+      handleServerNetworkError(error, dispatch);
+    }
+  };
+};
+// _________________
 const slice = createSlice({
   name: "tasks",
   initialState: initialState,
@@ -120,18 +138,18 @@ export const addTaskTC = (
   };
 };
 
-export const fetchTasksTC = (todolistId: string): AppThunkType => {
-  return async (dispatch) => {
-    try {
-      dispatch(setAppStatusAC({ status: "loading" }));
-      const res = await todolistsAPI.getTasks(todolistId);
-      dispatch(setTasksAC({ todolistId, tasks: res.data.items })); //fix
-      dispatch(setAppStatusAC({ status: "succeeded" }));
-    } catch (error) {
-      handleServerNetworkError(error, dispatch);
-    }
-  };
-};
+// export const fetchTasksTC = (todolistId: string): AppThunkType => {
+//   return async (dispatch) => {
+//     try {
+//       dispatch(setAppStatusAC({ status: "loading" }));
+//       const res = await todolistsAPI.getTasks(todolistId);
+//       dispatch(setTasksAC({ todolistId, tasks: res.data.items }));
+//       dispatch(setAppStatusAC({ status: "succeeded" }));
+//     } catch (error) {
+//       handleServerNetworkError(error, dispatch);
+//     }
+//   };
+// };
 
 type UpdateDomainTaskModelType = {
   title?: string;
