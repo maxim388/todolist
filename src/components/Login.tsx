@@ -34,8 +34,14 @@ export const Login = () => {
       password: "",
       rememberMe: false,
     },
-    onSubmit: (values) => {
-      dispatch(loginTC(values));
+    onSubmit: async (values, formikHelpers) => {
+      const action = await dispatch(loginTC(values));
+      if (loginTC.rejected.match(action)) {
+        if (action.payload?.fieldsErrors?.length) {
+          const { field, error } = action.payload.fieldsErrors[0];
+          formikHelpers.setFieldError(field, error);
+        }
+      }
     },
   });
 

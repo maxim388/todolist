@@ -93,19 +93,15 @@ const slice = createSlice({
       delete stateDraft[action.payload.todolistId];
     });
     builder.addCase(fetchTasksTC.fulfilled, (stateDraft, action) => {
-      if (action.payload) {
-        stateDraft[action.payload.todolistId] = action.payload.tasks;
-      }
+     
+        stateDraft[action.payload!.todolistId] = action.payload!.tasks;
+     
     });
     builder.addCase(removeTaskTC.fulfilled, (stateDraft, action) => {
-      if (action.payload) {
-        const tasks = stateDraft[action.payload.todolistId];
-        const taskIndex = tasks.findIndex(
-          (t) => t.id === action.payload!.taskId
-        );
-        if (taskIndex !== -1) {
-          tasks.splice(taskIndex, 1);
-        }
+      const tasks = stateDraft[action.payload!.todolistId];
+      const taskIndex = tasks.findIndex((t) => t.id === action.payload!.taskId);
+      if (taskIndex !== -1) {
+        tasks.splice(taskIndex, 1);
       }
     });
   },

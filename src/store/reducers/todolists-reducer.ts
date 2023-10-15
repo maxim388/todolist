@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TodolistTypeAPI, todolistsAPI } from "../../api/todolists-api";
 import { handleServerNetworkError } from "../../utils/error-utils";
 import { AppThunkType } from "../store";
-import { RequestStatusType, initializeAppTC, setAppStatusAC } from "./app-reducer";
+import { RequestStatusType, setAppStatusAC } from "./app-reducer";
 
 const initialState: TodolistDomainType[] = [];
 
