@@ -5,11 +5,11 @@ import {
 } from "./todolists-reducer";
 import {
   TodolistOfTasksType,
-  addTaskAC,
+  addTaskTC,
   fetchTasksTC,
   removeTaskTC,
   tasksReducer,
-  updateTaskAC,
+  updateTaskTC,
 } from "./tasks-reducer";
 import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
 
@@ -174,20 +174,23 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  const action = addTaskAC({
-    task: {
-      id: "1",
-      title: "juce",
-      description: "",
-      todoListId: "todolistId2",
-      order: 0,
-      status: TodoTaskStatus.New,
-      priority: TodoTaskPriority.Later,
-      startDate: "",
-      deadline: "",
-      addedDate: "",
-    },
-  });
+  const param = {
+    id: "1",
+    title: "juce",
+    description: "",
+    todoListId: "todolistId2",
+    order: 0,
+    status: TodoTaskStatus.New,
+    priority: TodoTaskPriority.Later,
+    startDate: "",
+    deadline: "",
+    addedDate: "",
+  };
+  const meta = {
+    todolistId: param.todoListId,
+    taskTitle: param.title,
+  };
+  const action = addTaskTC.fulfilled({ task: param }, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -199,11 +202,17 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = updateTaskAC({
+  const param = {
     todolistId: "todolistId2",
     taskId: "2",
     property: { status: TodoTaskStatus.New },
-  });
+  };
+  const meta = {
+    todolistId: param.todolistId,
+    taskId: param.taskId,
+    domainModel: param.property,
+  };
+  const action = updateTaskTC.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 

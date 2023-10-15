@@ -16,19 +16,31 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
   const dispatch = useAppDispatch();
 
   const onRemoveHendler = () => {
-    dispatch(removeTaskTC({todolistId, taskId: task.id}));
+    dispatch(removeTaskTC({ todolistId, taskId: task.id }));
   };
 
-  const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const checked = Number(e.currentTarget.checked);
-    dispatch(updateTaskTC(todolistId, task.id, { status: checked }));
-  };
+  const onChangeStatusHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const param = {
+        todolistId,
+        taskId: task.id,
+        domainModel: { status: Number(e.currentTarget.checked) },
+      };
+      dispatch(updateTaskTC(param));
+    },
+    [dispatch, todolistId, task.id]
+  );
 
   const onChangeTitleHandler = useCallback(
     (newValue: string) => {
-      dispatch(updateTaskTC(todolistId, task.id, { title: newValue }));
+      const param = {
+        todolistId,
+        taskId: task.id,
+        domainModel: { title: newValue },
+      };
+      dispatch(updateTaskTC(param));
     },
-    [task.id, todolistId]
+    [dispatch, todolistId, task.id]
   );
 
   return (
