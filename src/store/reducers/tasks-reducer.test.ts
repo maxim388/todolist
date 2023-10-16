@@ -1,7 +1,7 @@
 import {
-  addTodolistAC,
-  removeTodolistAC,
-  setTodolistsAC,
+  addTodolistTC,
+  fetchTodolistsTC,
+  removeTodolistTC,
 } from "./todolists-reducer";
 import {
   TodolistOfTasksType,
@@ -221,13 +221,16 @@ test("status of specified task should be changed", () => {
 });
 
 test("new array should be added when new todolist is added", () => {
-  const todolist = {
-    id: "string",
-    title: "new todolist",
-    addedDate: "string",
-    order: 0,
+  const param = {
+    todolist: {
+      id: "string",
+      title: "new todolist",
+      addedDate: "string",
+      order: 0,
+    },
   };
-  const action = addTodolistAC({ todolist });
+  const meta = { todolistTitle: param.todolist.title };
+  const action = addTodolistTC.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -242,7 +245,9 @@ test("new array should be added when new todolist is added", () => {
 });
 
 test("property with todolistId should be deleted", () => {
-  const action = removeTodolistAC({ todolistId: "todolistId2" });
+  const param = { todolistId: "todolistId2" };
+  const meta = param;
+  const action = removeTodolistTC.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -253,7 +258,7 @@ test("property with todolistId should be deleted", () => {
 });
 
 test("empty arrays should be added when we set todolists", () => {
-  const action = setTodolistsAC({
+  const param = {
     todolists: [
       {
         id: "1",
@@ -272,7 +277,8 @@ test("empty arrays should be added when we set todolists", () => {
         entityStatus: "idle",
       },
     ],
-  });
+  };
+  const action = fetchTodolistsTC.fulfilled(param, "");
 
   const endState = tasksReducer({}, action);
 

@@ -2,14 +2,15 @@ import {
   RemoveTodolistACType,
   SetTodolistsACType,
   AddTodolistACType,
-  addTodolistAC,
-  removeTodolistAC,
-  setTodolistsAC,
+  fetchTodolistsTC,
+  removeTodolistTC,
+  addTodolistTC,
 } from "./todolists-reducer";
 import {
   TaskTypeAPI,
   TodoTaskPriority,
   TodoTaskStatus,
+  TodolistTypeAPI,
   UpdateTaskModelType,
   todolistsAPI,
 } from "../../api/todolists-api";
@@ -140,15 +141,15 @@ const slice = createSlice({
   initialState: {} as TodolistOfTasksType,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(addTodolistAC, (stateDraft, action) => {
+    builder.addCase(addTodolistTC.fulfilled, (stateDraft, action) => {
       stateDraft[action.payload.todolist.id] = [];
     });
-    builder.addCase(setTodolistsAC, (stateDraft, action) => {
-      action.payload.todolists.forEach((tl) => {
+    builder.addCase(fetchTodolistsTC.fulfilled, (stateDraft, action) => {
+      action.payload.todolists.forEach((tl: TodolistTypeAPI) => {
         stateDraft[tl.id] = [];
       });
     });
-    builder.addCase(removeTodolistAC, (stateDraft, action) => {
+    builder.addCase(removeTodolistTC.fulfilled, (stateDraft, action) => {
       delete stateDraft[action.payload.todolistId];
     });
     builder.addCase(addTaskTC.fulfilled, (stateDraft, action) => {
@@ -164,7 +165,6 @@ const slice = createSlice({
         tasks[taskIndex] = { ...tasks[taskIndex], ...action.payload.property };
       }
     });
-
     builder.addCase(removeTaskTC.fulfilled, (stateDraft, action) => {
       const tasks = stateDraft[action.payload!.todolistId];
       const taskIndex = tasks.findIndex((t) => t.id === action.payload!.taskId);
