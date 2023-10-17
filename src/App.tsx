@@ -32,12 +32,12 @@ export function App({ demo = true }) {
   }, []);
 
   const addTodoList = useCallback((title: string) => {
-    dispatch(addTodolistTC(title));
+    dispatch(addTodolistTC({ todolistTitle: title }));
   }, []);
   const logoutHandler = useCallback(() => {
     dispatch(logoutTC());
   }, []);
-  
+
   if (!appIsInitialized) {
     return (
       // fix style

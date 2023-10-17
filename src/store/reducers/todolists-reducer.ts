@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TodolistTypeAPI, todolistsAPI } from "../../api/todolists-api";
 import { handleServerNetworkError } from "../../utils/error-utils";
 import { AppThunkType } from "../store";
-import { RequestStatusType, initializeAppTC, setAppStatusAC } from "./app-reducer";
+import { RequestStatusType, setAppStatusAC } from "./app-reducer";
 
 const initialState: TodolistDomainType[] = [];
 
@@ -115,7 +115,7 @@ export const addTodolistTC = (todolistTitle: string): AppThunkType => {
     try {
       dispatch(setAppStatusAC({ status: "loading" }));
       const res = await todolistsAPI.createTodolist(todolistTitle); 
-      dispatch(addTodolistAC({todolist: res.data.data.item})); //fix data.data
+      dispatch(addTodolistAC({todolist: res.data.data.item}));
       dispatch(setAppStatusAC({ status: "succeeded" }));
     } catch (error) {
       handleServerNetworkError(error, dispatch);

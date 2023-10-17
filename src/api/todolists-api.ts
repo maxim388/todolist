@@ -18,10 +18,11 @@ export type TodolistTypeAPI = {
 type DataType = {
   item: TodolistTypeAPI;
 };
+export type FieldErrorType = { field: string; error: string };
 export type ResponseType<D = {}> = {
   data: D;
   messages: string[];
-  fieldsErrors: string[];
+  fieldsErrors: FieldErrorType[];
   resultCode: number;
 };
 export enum TodoTaskStatus {
