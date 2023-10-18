@@ -28,17 +28,18 @@ export const Todolist: FC<TodolistPropsType> = memo(
     const tasks = useAppSelector((state) => state.tasks[todolist.id]);
 
     useEffect(() => {
-      // if (demo) return; //clear in build
+      // if (demo) return; //clean in build
       dispatch(fetchTasksTC({ todolistId: todolist.id }));
     }, [dispatch, todolist.id, demo]);
 
     const removeTodolist = useCallback(() => {
-      dispatch(removeTodolistTC(todolist.id));
+      dispatch(removeTodolistTC({ todolistId: todolist.id }));
     }, [dispatch, todolist.id]);
 
     const changeTodolistTitle = useCallback(
       (newTodolistTitle: string) => {
-        dispatch(changeTodolistTitleTC(todolist.id, newTodolistTitle));
+        const param = { todolistId: todolist.id, title: newTodolistTitle };
+        dispatch(changeTodolistTitleTC(param));
       },
       [dispatch, todolist.id]
     );
@@ -52,7 +53,7 @@ export const Todolist: FC<TodolistPropsType> = memo(
 
     const changeFilter = useCallback(
       (filter: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodolistFilterTC(todolistId, filter));
+        dispatch(changeTodolistFilterTC({todolistId, filter}));
       },
       [dispatch]
     );
