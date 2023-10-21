@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   addTodolistTC,
-  fetchTodolistsTC,
 } from "./store/reducers/todolists-reducer";
 import { Box, CircularProgress, LinearProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
@@ -29,14 +28,17 @@ export function App({ demo = true }) {
 
   useEffect(() => {
     dispatch(initializeAppTC());
-  }, []);
+  }, [dispatch]);
 
-  const addTodoList = useCallback((title: string) => {
-    dispatch(addTodolistTC({ todolistTitle: title }));
-  }, []);
+  const addTodoList = useCallback(
+    (title: string) => {
+      dispatch(addTodolistTC({ todolistTitle: title }));
+    },
+    [dispatch]
+  );
   const logoutHandler = useCallback(() => {
     dispatch(logoutTC());
-  }, []);
+  }, [dispatch]);
 
   if (!appIsInitialized) {
     return (

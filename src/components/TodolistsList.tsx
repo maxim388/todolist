@@ -22,7 +22,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({
 
   useEffect(() => {
     dispatch(fetchTodolistsTC());
-  }, []);
+  }, [dispatch]);
 
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
