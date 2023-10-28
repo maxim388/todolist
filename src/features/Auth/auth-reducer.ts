@@ -10,7 +10,7 @@ import {
 } from "../../utils/error-utils";
 import { setAppStatusAC } from "../../app/app-reducer";
 
-export const loginTC = createAsyncThunk<
+export const login = createAsyncThunk<
   undefined,
   LoginParamsType,
   { rejectValue: { errors: string[]; fieldsErrors?: FieldErrorType[] } }
@@ -41,7 +41,7 @@ export const loginTC = createAsyncThunk<
   }
 });
 
-export const logoutTC = createAsyncThunk(
+export const logout = createAsyncThunk(
   "auth/logout",
   async (param, { dispatch, rejectWithValue }) => {
     try {
@@ -59,7 +59,7 @@ export const logoutTC = createAsyncThunk(
       }
     } catch (error) {
       handleServerNetworkError(error, dispatch);
-      //fix
+      //fix_me
       let err = { errors: ["some error"], fieldsErrors: undefined };
       if (error instanceof Error && error.message) {
         return rejectWithValue({ ...err, errors: [error.message] });
@@ -74,7 +74,7 @@ const slice = createSlice({
   name: "auth",
   initialState: { isLoggedIn: false },
   reducers: {
-    setIsLoggedInAC(
+    setIsLoggedIn(
       stateDraft,
       action: PayloadAction<{ isLoggedIn: boolean }>
     ) {
@@ -82,18 +82,19 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginTC.fulfilled, (stateDraft, action) => {
+    builder.addCase(login.fulfilled, (stateDraft, action) => {
       stateDraft.isLoggedIn = true;
     });
-    builder.addCase(logoutTC.fulfilled, (stateDraft, action) => {
+    builder.addCase(logout.fulfilled, (stateDraft, action) => {
       stateDraft.isLoggedIn = false;
     });
   },
 });
 
 export const authReducer = slice.reducer;
-export const { setIsLoggedInAC } = slice.actions;
+export const { setIsLoggedIn } = slice.actions;
 
-export type AuthActionsType = SetIsLoggedInACType;
+export type AuthActionsType = SetIsLoggedInType;
 
-export type SetIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>;
+export type SetIsLoggedInType = ReturnType<typeof setIsLoggedIn>;
+ 

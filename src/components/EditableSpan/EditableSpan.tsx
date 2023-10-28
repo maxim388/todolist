@@ -5,15 +5,15 @@ export type EditableSpanPropsType = {
   title: string;
   onChange: (newValue: string) => void;
 };
-export const EditableSpan: FC<EditableSpanPropsType> = memo((props) => {
+export const EditableSpan: FC<EditableSpanPropsType> = memo((restProps) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const activeEditMode = () => {
     setEditMode(true);
-    setTitle(props.title);
+    setTitle(restProps.title);
   };
   const activeViewMode = () => {
-    props.onChange(title);
+    restProps.onChange(title);
     setEditMode(false);
   };
   const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +28,6 @@ export const EditableSpan: FC<EditableSpanPropsType> = memo((props) => {
       onChange={onChangeTitleHandler}
     />
   ) : (
-    <span onDoubleClick={activeEditMode}>{props.title}</span>
+    <span onDoubleClick={activeEditMode}>{restProps.title}</span>
   );
 });

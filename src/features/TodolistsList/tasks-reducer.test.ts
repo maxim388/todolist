@@ -1,16 +1,15 @@
 import {
-  addTodolistTC,
-  fetchTodolistsTC,
-  removeTodolistTC,
-} from "./todolists-reducer";
+  addTodolist,
+  fetchTodolists,
+  removeTodolist
+} from "./todolists-actions";
+import { TodolistOfTasksType, tasksReducer } from "./tasks-reducer";
 import {
-  TodolistOfTasksType,
-  addTaskTC,
-  fetchTasksTC,
-  removeTaskTC,
-  tasksReducer,
-  updateTaskTC,
-} from "./tasks-reducer";
+  addTask,
+  fetchTasks,
+  removeTask,
+  updateTask,
+} from "./tasks-actions";
 import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
 
 let startState: TodolistOfTasksType;
@@ -101,7 +100,7 @@ test("correct task should be deleted from correct array", () => {
     todolistId: "todolistId2",
     taskId: "2",
   };
-  const action = removeTaskTC.fulfilled(param, "", param);
+  const action = removeTask.fulfilled(param, "", param);
 
   const endState = tasksReducer(startState, action);
 
@@ -190,7 +189,7 @@ test("correct task should be added to correct array", () => {
     todolistId: param.todoListId,
     taskTitle: param.title,
   };
-  const action = addTaskTC.fulfilled({ task: param }, "", meta);
+  const action = addTask.fulfilled({ task: param }, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -212,7 +211,7 @@ test("status of specified task should be changed", () => {
     taskId: param.taskId,
     domainModel: param.property,
   };
-  const action = updateTaskTC.fulfilled(param, "", meta);
+  const action = updateTask.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -230,7 +229,7 @@ test("new array should be added when new todolist is added", () => {
     },
   };
   const meta = { todolistTitle: param.todolist.title };
-  const action = addTodolistTC.fulfilled(param, "", meta);
+  const action = addTodolist.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -247,7 +246,7 @@ test("new array should be added when new todolist is added", () => {
 test("property with todolistId should be deleted", () => {
   const param = { todolistId: "todolistId2" };
   const meta = param;
-  const action = removeTodolistTC.fulfilled(param, "", meta);
+  const action = removeTodolist.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 
@@ -278,7 +277,7 @@ test("empty arrays should be added when we set todolists", () => {
       },
     ],
   };
-  const action = fetchTodolistsTC.fulfilled(param, "");
+  const action = fetchTodolists.fulfilled(param, "");
 
   const endState = tasksReducer({}, action);
 
@@ -290,7 +289,7 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  const action = fetchTasksTC.fulfilled(
+  const action = fetchTasks.fulfilled(
     {
       todolistId: "todolistId1",
       tasks: startState["todolistId1"],

@@ -3,9 +3,9 @@ import { EditableSpan } from "../../../../components/EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import { updateTaskTC, removeTaskTC } from "../../tasks-reducer";
 import { TaskTypeAPI } from "../../../../api/todolists-api";
-import { useAppDispatch } from "../../../../app/hooks";
+import { useActions } from "../../../../app/hooks";
+import { tasksActions } from "../..";
 
 export type TaskPropsType = {
   todolistId: string;
@@ -13,22 +13,23 @@ export type TaskPropsType = {
 };
 
 export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
-  const dispatch = useAppDispatch();
+  const { updateTask, removeTask } = useActions(tasksActions);
 
   const onRemoveHendler = () => {
-    dispatch(removeTaskTC({ todolistId, taskId: task.id }));
+    removeTask({ todolistId, taskId: task.id });
   };
 
   const onChangeStatusHandler = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
+      const status = Number(e.currentTarget.checked) ? 2 : 0;
       const param = {
         todolistId,
         taskId: task.id,
-        domainModel: { status: Number(e.currentTarget.checked) },
+        domainModel: { status },
       };
-      dispatch(updateTaskTC(param));
+      updateTask(param);
     },
-    [dispatch, todolistId, task.id]
+    [todolistId, task.id]
   );
 
   const onChangeTitleHandler = useCallback(
@@ -38,9 +39,9 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
         taskId: task.id,
         domainModel: { title: newValue },
       };
-      dispatch(updateTaskTC(param));
+      updateTask(param);
     },
-    [dispatch, todolistId, task.id]
+    [todolistId, task.id]
   );
 
   return (

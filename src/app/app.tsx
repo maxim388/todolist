@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { addTodolistTC } from "../features/TodolistsList/todolists-reducer";
+import { addTodolist } from "../features/TodolistsList/todolists-actions";
 import { Box, CircularProgress, LinearProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
@@ -14,18 +14,15 @@ import { TodolistsList } from "../features/TodolistsList/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../features/Auth/Login";
 import { initializeAppTC } from "./app-reducer";
-import { logoutTC } from "../features/Auth/auth-reducer";
-import { AppRootStateType } from "./store";
-
-const selectStatus = (state: AppRootStateType) => state.app.status;
-const selectIsInitialized = (state: AppRootStateType) => state.app.isInitialized;
-const selectIsLoggedIn = (state: AppRootStateType) => state.auth.isLoggedIn;
+import { logout } from "../features/Auth/auth-reducer";
+import { selectIsInitialized, selectStatus } from "./selectors";
+import { authSelectors } from "../features/Auth/";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
   const appStatus = useAppSelector(selectStatus);
   const appIsInitialized = useAppSelector(selectIsInitialized);
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
   useEffect(() => {
     dispatch(initializeAppTC());
@@ -33,12 +30,12 @@ export function App({ demo = true }) {
 
   const addTodoList = useCallback(
     (title: string) => {
-      dispatch(addTodolistTC({ todolistTitle: title }));
+      dispatch(addTodolist({ todolistTitle: title }));
     },
     [dispatch]
   );
   const logoutHandler = useCallback(() => {
-    dispatch(logoutTC());
+    dispatch(logout());
   }, [dispatch]);
 
   if (!appIsInitialized) {
@@ -85,7 +82,7 @@ export function App({ demo = true }) {
         <Routes>
           <Route
             path={"/"}
-            element={<TodolistsList demo={demo} addTodoList={addTodoList} />}
+            element={<TodolistsList addTodoList={addTodoList} />}
           />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/404"} element={<h1>404: PAGE NOT FOUND</h1>} />

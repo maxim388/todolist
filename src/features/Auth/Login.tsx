@@ -8,12 +8,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { loginTC } from "./auth-reducer";
+import { login } from "./auth-reducer";
 import { Navigate } from "react-router-dom";
+import { selectIsLoggedIn } from "./selectors";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   const formik = useFormik({
     validate: (values) => {
@@ -34,8 +35,8 @@ export const Login = () => {
       rememberMe: false,
     },
     onSubmit: async (values, formikHelpers) => {
-      const action = await dispatch(loginTC(values));
-      if (loginTC.rejected.match(action)) {
+      const action = await dispatch(login(values));
+      if (login.rejected.match(action)) {
         if (action.payload?.fieldsErrors?.length) {
           const { field, error } = action.payload.fieldsErrors[0];
           formikHelpers.setFieldError(field, error);

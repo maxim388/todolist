@@ -4,65 +4,59 @@ import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import { Delete } from "@mui/icons-material";
 import { Task } from "./Task/Task";
-import {
-  FilterValuesType,
-  TodolistDomainType,
-  changeTodolistFilterTC,
-  changeTodolistTitleTC,
-  removeTodolistTC,
-} from "../todolists-reducer";
-import { addTaskTC, fetchTasksTC } from "../tasks-reducer";
+import { FilterValuesType, TodolistDomainType } from "../todolists-reducer";
 import { AddItemForm } from "../../../components/AddItemForm/AddItemForm";
 import { TodoTaskStatus } from "../../../api/todolists-api";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useActions, useAppSelector } from "../../../app/hooks";
+import { tasksActions, todolistsActions } from "..";
 
 export type TodolistPropsType = {
   todolist: TodolistDomainType;
   arrTitleFilter: FilterValuesType[];
-  demo?: boolean;
 };
 
 export const Todolist: FC<TodolistPropsType> = memo(
-  ({ todolist, arrTitleFilter, demo }) => {
-    const dispatch = useAppDispatch();
+  ({ todolist, arrTitleFilter }) => {
     const tasks = useAppSelector((state) => state.tasks[todolist.id]);
+    const { addTask, fetchTasks } = useActions(tasksActions);
+    const { changeTodolistFilter, changeTodolistTitle, removeTodolist } =
+      useActions(todolistsActions);
 
     useEffect(() => {
-      // if (demo) return; //clean in build
-      dispatch(fetchTasksTC({ todolistId: todolist.id }));
-    }, [dispatch, todolist.id, demo]);
+      fetchTasks({ todolistId: todolist.id });
+    }, [todolist.id]);
 
-    const removeTodolist = useCallback(() => {
-      dispatch(removeTodolistTC({ todolistId: todolist.id }));
-    }, [dispatch, todolist.id]);
+    const onRemoveTodolist = useCallback(() => {
+      removeTodolist({ todolistId: todolist.id });
+    }, [todolist.id]);
 
-    const changeTodolistTitle = useCallback(
+    const onChangeTodolistTitle = useCallback(
       (newTodolistTitle: string) => {
         const param = { todolistId: todolist.id, title: newTodolistTitle };
-        dispatch(changeTodolistTitleTC(param));
+        changeTodolistTitle(param);
       },
-      [dispatch, todolist.id]
+      [todolist.id]
     );
 
-    const addTask = useCallback(
+    const addItem = useCallback(
       (taskTitle: string) => {
-        dispatch(addTaskTC({ todolistId: todolist.id, taskTitle }));
+        addTask({ todolistId: todolist.id, taskTitle });
       },
-      [dispatch, todolist.id]
+      [todolist.id]
     );
 
     const changeFilter = useCallback(
       (filter: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodolistFilterTC({todolistId, filter}));
+        changeTodolistFilter({ todolistId, filter });
       },
-      [dispatch]
+      []
     );
 
     let tasksForTodolist = tasks;
     if (todolist.filter === "Completed") {
-      tasksForTodolist = tasks.filter(
-        (t) => t.status === TodoTaskStatus.Completed
-      );
+      tasksForTodolist = tasks.filter((t) => {
+        return t.status === TodoTaskStatus.Completed;
+      });
     }
     if (todolist.filter === "Active") {
       tasksForTodolist = tasks.filter((t) => t.status === TodoTaskStatus.New);
@@ -70,15 +64,18 @@ export const Todolist: FC<TodolistPropsType> = memo(
     return (
       <div>
         <h3>
-          <EditableSpan title={todolist.title} onChange={changeTodolistTitle} />
+          <EditableSpan
+            title={todolist.title}
+            onChange={onChangeTodolistTitle}
+          />
           <Button
-            onClick={removeTodolist}
+            onClick={onRemoveTodolist}
             disabled={todolist.entityStatus === "loading"}
             startIcon={<Delete />}
           ></Button>
         </h3>
         <AddItemForm
-          addItem={addTask}
+          addItem={addItem}
           disabled={todolist.entityStatus === "loading"}
         />
         <div>
