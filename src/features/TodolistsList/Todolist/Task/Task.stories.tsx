@@ -1,8 +1,8 @@
 import { Provider } from "react-redux";
-import { Task } from "../../components/Task";
-import { store } from "../../store/store";
-import { ReduxStoreProviderDecorator } from "../../stories/ReduxStoreProviderDecorator";
-import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
+import { Task } from "./Task";
+import { store } from "../../../../app/store";
+import { ReduxStoreProviderDecorator } from "../../../../stories/ReduxStoreProviderDecorator";
+import { TodoTaskPriority, TodoTaskStatus } from "../../../../api/todolists-api";
 
 export default {
   title: "TODOLIST/Task",

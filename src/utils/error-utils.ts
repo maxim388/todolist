@@ -4,7 +4,7 @@ import {
   SetAppStatusACType,
   setAppErrorAC,
   setAppStatusAC,
-} from "../store/reducers/app-reducer";
+} from "../app/app-reducer";
 import { ResponseType } from "../api/todolists-api";
 
 export const handleServerAppError = <T>(

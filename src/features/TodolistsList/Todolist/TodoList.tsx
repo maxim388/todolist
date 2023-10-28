@@ -1,20 +1,20 @@
 import { FC, memo, useCallback, useEffect } from "react";
-import { MyButton } from "./MyButton";
-import { EditableSpan } from "./EditableSpan";
+import { MyButton } from "../../../components/MyButton/MyButton";
+import { EditableSpan } from "../../../components/EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import { Delete } from "@mui/icons-material";
-import { Task } from "./Task";
+import { Task } from "./Task/Task";
 import {
   FilterValuesType,
   TodolistDomainType,
   changeTodolistFilterTC,
   changeTodolistTitleTC,
   removeTodolistTC,
-} from "../store/reducers/todolists-reducer";
-import { addTaskTC, fetchTasksTC } from "../store/reducers/tasks-reducer";
-import { AddItemForm } from "./AddItemForm";
-import { TodoTaskStatus } from "../api/todolists-api";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+} from "../todolists-reducer";
+import { addTaskTC, fetchTasksTC } from "../tasks-reducer";
+import { AddItemForm } from "../../../components/AddItemForm/AddItemForm";
+import { TodoTaskStatus } from "../../../api/todolists-api";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 
 export type TodolistPropsType = {
   todolist: TodolistDomainType;

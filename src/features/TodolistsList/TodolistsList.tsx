@@ -1,12 +1,12 @@
-import { FC, memo, useCallback, useEffect } from "react";
-import { FilterValuesType, fetchTodolistsTC } from "../store/reducers/todolists-reducer";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { FC, useEffect } from "react";
+import { FilterValuesType, fetchTodolistsTC } from "./todolists-reducer";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Grid, Paper } from "@mui/material";
-import { Todolist } from "./TodoList";
-import { AddItemForm } from "./AddItemForm";
+import { Todolist } from "./Todolist/TodoList";
+import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import { Navigate } from "react-router-dom";
 
-let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+const arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 type TodolistsListPropsType = {
   demo: boolean;
   addTodoList: (title: string) => void;

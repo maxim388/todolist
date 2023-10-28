@@ -8,7 +8,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
-import { setAppStatusAC } from "./app-reducer";
+import { setAppStatusAC } from "../../app/app-reducer";
 
 export const loginTC = createAsyncThunk<
   undefined,

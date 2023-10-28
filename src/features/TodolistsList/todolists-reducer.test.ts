@@ -1,4 +1,4 @@
-import { RequestStatusType } from "./app-reducer";
+import { RequestStatusType } from "../../app/app-reducer";
 import {
   FilterValuesType,
   TodolistDomainType,

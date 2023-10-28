@@ -1,4 +1,4 @@
-import { AddItemForm } from "../../components/AddItemForm";
+import { AddItemForm } from "./AddItemForm";
 import { action } from "@storybook/addon-actions";
 
 export default {

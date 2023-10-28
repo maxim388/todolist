@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { FilterValuesType } from "../store/reducers/todolists-reducer";
+import { FilterValuesType } from "../../features/TodolistsList/todolists-reducer";
 import { FC, memo } from "react";
 
 export type ButtonPropsType = {

@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
-import { TasksActionsType, tasksReducer } from "./reducers/tasks-reducer";
+import { TasksActionsType, tasksReducer } from "../features/TodolistsList/tasks-reducer";
 import {
   TodolistsActionsType,
   todolistsReducer,
-} from "./reducers/todolists-reducer";
+} from "../features/TodolistsList/todolists-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { ActionsType, appReducer } from "./reducers/app-reducer";
-import { AuthActionsType, authReducer } from "./reducers/auth-reducer";
+import { ActionsType, appReducer } from "./app-reducer";
+import { AuthActionsType, authReducer } from "../features/Auth/auth-reducer";
 import { configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({

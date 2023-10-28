@@ -1,9 +1,9 @@
 import { action } from "@storybook/addon-actions";
-import { App } from "../../App";
+import { App } from "./app";
 import {
   HashRouterDecorator,
   ReduxStoreProviderDecorator,
-} from "../../stories/ReduxStoreProviderDecorator";
+} from "../stories/ReduxStoreProviderDecorator";
 
 export default {
   title: "TODOLIST/App",

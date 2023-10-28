@@ -1,10 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authAPI } from "../../api/todolists-api";
+import { authAPI } from "../api/todolists-api";
 import {
   handleServerAppError,
   handleServerNetworkError,
-} from "../../utils/error-utils";
-import { setIsLoggedInAC } from "./auth-reducer";
+} from "../utils/error-utils";
+import { setIsLoggedInAC } from "../features/Auth/auth-reducer";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 

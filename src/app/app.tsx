@@ -6,25 +6,26 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  addTodolistTC,
-} from "./store/reducers/todolists-reducer";
+import { addTodolistTC } from "../features/TodolistsList/todolists-reducer";
 import { Box, CircularProgress, LinearProgress } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import { ErrorSnackbar } from "./components/ErrorSnackbar";
-import { TodolistsList } from "./components/TodolistsList";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
+import { TodolistsList } from "../features/TodolistsList/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login } from "./components/Login";
-import { initializeAppTC } from "./store/reducers/app-reducer";
-import { logoutTC } from "./store/reducers/auth-reducer";
+import { Login } from "../features/Auth/Login";
+import { initializeAppTC } from "./app-reducer";
+import { logoutTC } from "../features/Auth/auth-reducer";
+import { AppRootStateType } from "./store";
+
+const selectStatus = (state: AppRootStateType) => state.app.status;
+const selectIsInitialized = (state: AppRootStateType) => state.app.isInitialized;
+const selectIsLoggedIn = (state: AppRootStateType) => state.auth.isLoggedIn;
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
-  const appStatus = useAppSelector((state) => state.app.status);
-  const appIsInitialized = useAppSelector((state) => state.app.isInitialized);
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-
-  // let arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+  const appStatus = useAppSelector(selectStatus);
+  const appIsInitialized = useAppSelector(selectIsInitialized);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   useEffect(() => {
     dispatch(initializeAppTC());

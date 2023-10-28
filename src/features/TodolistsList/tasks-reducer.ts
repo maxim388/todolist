@@ -1,10 +1,10 @@
 import {
-  RemoveTodolistACType,
   SetTodolistsACType,
   AddTodolistACType,
   fetchTodolistsTC,
   removeTodolistTC,
   addTodolistTC,
+  RemoveTodolistACType,
 } from "./todolists-reducer";
 import {
   TaskTypeAPI,
@@ -14,13 +14,13 @@ import {
   UpdateTaskModelType,
   todolistsAPI,
 } from "../../api/todolists-api";
-import { setAppStatusAC } from "./app-reducer";
+import { setAppStatusAC } from "../../app/app-reducer";
 import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AppRootStateType } from "../store";
+import { AppRootStateType } from "../../app/store";
 
 export type TodolistOfTasksType = {
   [key: string]: TaskTypeAPI[];
@@ -86,7 +86,9 @@ export const updateTaskTC = createAsyncThunk(
   ) => {
     const { todolistId, taskId, domainModel } = param;
     const state = getState() as AppRootStateType;
-    const targetTask = state.tasks[todolistId].find((t) => t.id === taskId);
+    const targetTask = state.tasks[todolistId].find(
+      (t: TaskTypeAPI) => t.id === taskId
+    );
     if (!targetTask) {
       return rejectWithValue("Task not found in the state");
     }

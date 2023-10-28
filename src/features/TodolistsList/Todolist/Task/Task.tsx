@@ -1,11 +1,11 @@
 import { useCallback, ChangeEvent, memo, FC } from "react";
-import { EditableSpan } from "./EditableSpan";
+import { EditableSpan } from "../../../../components/EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import { updateTaskTC, removeTaskTC } from "../store/reducers/tasks-reducer";
-import { TaskTypeAPI } from "../api/todolists-api";
-import { useAppDispatch } from "../hooks/hooks";
+import { updateTaskTC, removeTaskTC } from "../../tasks-reducer";
+import { TaskTypeAPI } from "../../../../api/todolists-api";
+import { useAppDispatch } from "../../../../app/hooks";
 
 export type TaskPropsType = {
   todolistId: string;

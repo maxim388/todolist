@@ -7,8 +7,8 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { loginTC } from "../store/reducers/auth-reducer";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { loginTC } from "./auth-reducer";
 import { Navigate } from "react-router-dom";
 
 export const Login = () => {
