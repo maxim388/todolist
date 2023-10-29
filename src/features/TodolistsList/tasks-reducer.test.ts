@@ -1,16 +1,17 @@
 import {
-  addTodolist,
-  fetchTodolists,
-  removeTodolist
-} from "./todolists-actions";
-import { TodolistOfTasksType, tasksReducer } from "./tasks-reducer";
-import {
+  TodolistOfTasksType,
   addTask,
   fetchTasks,
   removeTask,
+  tasksReducer,
   updateTask,
-} from "./tasks-actions";
+} from "./tasks-reducer";
 import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
+import {
+  addTodolist,
+  fetchTodolists,
+  removeTodolist,
+} from "./todolists-reducer";
 
 let startState: TodolistOfTasksType;
 
@@ -189,7 +190,7 @@ test("correct task should be added to correct array", () => {
     todolistId: param.todoListId,
     taskTitle: param.title,
   };
-  const action = addTask.fulfilled({ task: param }, "", meta);
+  const action = addTask.fulfilled(param, "", meta);
 
   const endState = tasksReducer(startState, action);
 

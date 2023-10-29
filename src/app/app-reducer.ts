@@ -14,22 +14,29 @@ export type InitialStateType = {
   isInitialized: boolean;
 };
 
-export const initializeAppTC = createAsyncThunk(
+export const initializeApp = createAsyncThunk(
   "app/initializeApp",
-  async (param, { dispatch }) => {
+  async (param, { dispatch, rejectWithValue }) => {
     try {
       const res = await authAPI.me();
       if (res.data.resultCode === 0) {
+        // fixme return { isLoggedIn: true };
         dispatch(setIsLoggedIn({ isLoggedIn: true }));
       } else {
         handleServerAppError(res.data, dispatch);
+        return rejectWithValue(null);
       }
-      return
+      return;
     } catch (error) {
       handleServerNetworkError(error, dispatch);
+      return rejectWithValue(null);
     }
   }
 );
+
+export const asyncActions = {
+  initializeApp,
+};
 
 const slice = createSlice({
   name: "app",
@@ -39,30 +46,27 @@ const slice = createSlice({
     isInitialized: false,
   } as InitialStateType,
   reducers: {
-    setAppStatusAC(
+    setAppStatus(
       stateDraft,
       action: PayloadAction<{ status: RequestStatusType }>
     ) {
       stateDraft.status = action.payload.status;
     },
-    setAppErrorAC(stateDraft, action: PayloadAction<{ error: string | null }>) {
+    setAppError(stateDraft, action: PayloadAction<{ error: string | null }>) {
       stateDraft.error = action.payload.error;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(initializeAppTC.fulfilled, (stateDraft, action) => {
+    builder.addCase(initializeApp.fulfilled, (stateDraft, action) => {
       stateDraft.isInitialized = true;
     });
   },
 });
 
 export const appReducer = slice.reducer;
-export const {
-  setAppStatusAC,
-  setAppErrorAC,
-} = slice.actions;
+export const { setAppStatus, setAppError } = slice.actions;
 
-export type ActionsType = SetAppStatusACType | SetAppErrorACType;
+export type ActionsType = SetAppStatusType | SetAppErrorType;
 
-export type SetAppStatusACType = ReturnType<typeof setAppStatusAC>;
-export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>;
+export type SetAppStatusType = ReturnType<typeof setAppStatus>;
+export type SetAppErrorType = ReturnType<typeof setAppError>;

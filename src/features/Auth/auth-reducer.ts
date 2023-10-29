@@ -8,7 +8,7 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
-import { setAppStatusAC } from "../../app/app-reducer";
+import { setAppStatus } from "../../app/app-reducer";
 
 export const login = createAsyncThunk<
   undefined,
@@ -17,10 +17,10 @@ export const login = createAsyncThunk<
 >("auth/login", async (param, { dispatch, rejectWithValue }) => {
   const { email, password, rememberMe } = param;
   try {
-    dispatch(setAppStatusAC({ status: "loading" }));
+    dispatch(setAppStatus({ status: "loading" }));
     const res = await authAPI.login({ email, password, rememberMe });
     if (res.data.resultCode === 0) {
-      dispatch(setAppStatusAC({ status: "succeeded" }));
+      dispatch(setAppStatus({ status: "succeeded" }));
       return;
     } else {
       handleServerAppError(res.data, dispatch);
@@ -31,7 +31,7 @@ export const login = createAsyncThunk<
     }
   } catch (error) {
     handleServerNetworkError(error, dispatch);
-    //fix
+    //fixme
     let err = { errors: ["some error"], fieldsErrors: undefined };
     if (error instanceof Error && error.message) {
       return rejectWithValue({ ...err, errors: [error.message] });
@@ -45,10 +45,10 @@ export const logout = createAsyncThunk(
   "auth/logout",
   async (param, { dispatch, rejectWithValue }) => {
     try {
-      dispatch(setAppStatusAC({ status: "loading" }));
+      dispatch(setAppStatus({ status: "loading" }));
       const res = await authAPI.logout();
       if (res.data.resultCode === 0) {
-        dispatch(setAppStatusAC({ status: "succeeded" }));
+        dispatch(setAppStatus({ status: "succeeded" }));
         return { isLoggedIn: false };
       } else {
         handleServerAppError(res.data, dispatch);
@@ -70,14 +70,16 @@ export const logout = createAsyncThunk(
   }
 );
 
-const slice = createSlice({
+export const asyncActions = {
+  login,
+  logout,
+};
+
+export const slice = createSlice({
   name: "auth",
   initialState: { isLoggedIn: false },
   reducers: {
-    setIsLoggedIn(
-      stateDraft,
-      action: PayloadAction<{ isLoggedIn: boolean }>
-    ) {
+    setIsLoggedIn(stateDraft, action: PayloadAction<{ isLoggedIn: boolean }>) {
       stateDraft.isLoggedIn = action.payload.isLoggedIn;
     },
   },
@@ -97,4 +99,3 @@ export const { setIsLoggedIn } = slice.actions;
 export type AuthActionsType = SetIsLoggedInType;
 
 export type SetIsLoggedInType = ReturnType<typeof setIsLoggedIn>;
- 

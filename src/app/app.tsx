@@ -6,37 +6,37 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { addTodolist } from "../features/TodolistsList/todolists-actions";
 import { Box, CircularProgress, LinearProgress } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useActions, useAppDispatch, useAppSelector } from "./hooks";
 import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
-import { TodolistsList } from "../features/TodolistsList/TodolistsList";
+import { TodolistsList } from "../features/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login } from "../features/Auth/Login";
-import { initializeAppTC } from "./app-reducer";
-import { logout } from "../features/Auth/auth-reducer";
+import { Login, authActions } from "../features/Auth";
+import { initializeApp } from "./app-reducer";
 import { selectIsInitialized, selectStatus } from "./selectors";
-import { authSelectors } from "../features/Auth/";
+import { authSelectors } from "../features/Auth";
+import { addTodolist } from "../features/TodolistsList/todolists-reducer";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
+  const { logout } = useActions(authActions);
   const appStatus = useAppSelector(selectStatus);
   const appIsInitialized = useAppSelector(selectIsInitialized);
   const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
   useEffect(() => {
-    dispatch(initializeAppTC());
+    dispatch(initializeApp());
   }, [dispatch]);
 
   const addTodoList = useCallback(
-    (title: string) => {
+    async (title: string) => {
       dispatch(addTodolist({ todolistTitle: title }));
     },
     [dispatch]
   );
   const logoutHandler = useCallback(() => {
-    dispatch(logout());
-  }, [dispatch]);
+    logout();
+  }, [logout]);
 
   if (!appIsInitialized) {
     return (

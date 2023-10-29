@@ -4,7 +4,6 @@ import { AppDispatch, AppRootStateType } from "./store";
 import { ActionCreatorsMapObject, bindActionCreators } from "redux";
 import { useMemo } from "react";
 
-// Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 

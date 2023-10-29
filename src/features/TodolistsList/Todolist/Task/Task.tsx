@@ -29,7 +29,7 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
       };
       updateTask(param);
     },
-    [todolistId, task.id]
+    [updateTask, todolistId, task.id]
   );
 
   const onChangeTitleHandler = useCallback(
@@ -41,17 +41,22 @@ export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {
       };
       updateTask(param);
     },
-    [todolistId, task.id]
+    [updateTask, todolistId, task.id]
   );
 
   return (
-    <div key={task.id} className={task.status ? "is-done" : ""}>
-      <Checkbox
-        checked={Boolean(task.status)}
-        onChange={(e) => onChangeStatusHandler(e)}
-      />
+    <div
+      key={task.id}
+      className={task.status ? "is-done" : ""}
+      style={{ position: "relative" }}
+    >
+      <Checkbox checked={Boolean(task.status)} onChange={(e) => onChangeStatusHandler(e)} />
       <EditableSpan title={task.title} onChange={onChangeTitleHandler} />
-      <Button onClick={onRemoveHendler} startIcon={<Delete />}></Button>
+      <Button
+        onClick={onRemoveHendler}
+        startIcon={<Delete fontSize={"small"} />}
+        style={{ position: "absolute", top: "2px", right: "2px" }}
+      ></Button>
     </div>
   );
 });

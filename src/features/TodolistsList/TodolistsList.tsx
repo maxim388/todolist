@@ -10,7 +10,7 @@ import { todolistsActions } from ".";
 
 const arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 type TodolistsListPropsType = {
-  addTodoList: (title: string) => void;
+  addTodoList: (title: string) => Promise<any>;
 };
 
 export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodoList }) => {
@@ -20,7 +20,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodoList }) => {
 
   useEffect(() => {
     fetchTodolists();
-  }, []);
+  }, [fetchTodolists]);
 
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
@@ -31,11 +31,16 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodoList }) => {
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodoList} />
       </Grid>
-      <Grid container spacing={3}>
+      {/* fixme: style={{flexWrap: "nowrap", overflowX: "scroll"}}  */}
+      <Grid
+        container
+        spacing={3}
+        // style={{ flexWrap: "nowrap", overflowX: "scroll" }}
+      >
         {todolists.map((tl) => {
           return (
             <Grid item key={tl.id}>
-              <Paper style={{ padding: "10px" }}>
+              <Paper style={{ padding: "10px", width: "300px" }}>
                 <Todolist
                   key={tl.id}
                   todolist={tl}

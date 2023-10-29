@@ -5,9 +5,10 @@ export default {
   title: "TODOLIST/AddItemForm",
   component: AddItemForm,
 };
-
-const callback = action("Button 'add' was pressed inside the form");
+const asyncCallback = async (...params: any[]) => {
+  action("Button 'add' was pressed inside the form")(...params);
+};
 
 export const BaseExample = () => {
-  return <AddItemForm addItem={callback} />;
+  return <AddItemForm addItem={asyncCallback} />;
 };

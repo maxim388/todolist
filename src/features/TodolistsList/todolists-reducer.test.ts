@@ -2,17 +2,14 @@ import { RequestStatusType } from "../../app/app-reducer";
 import {
   FilterValuesType,
   TodolistDomainType,
+  addTodolist,
   changeTodolistEntityStatus,
+  changeTodolistFilter,
+  changeTodolistTitle,
+  fetchTodolists,
+  removeTodolist,
   todolistsReducer,
 } from "./todolists-reducer";
-import {
-  addTodolist, changeTodolistFilter,
-  changeTodolistTitle,
-  // changeTodolistFilterAC,
-  // changeTodolistTitleAC,
-  fetchTodolists,
-  removeTodolist
-} from "./todolists-actions";
 import { v1 } from "uuid";
 
 let todolistId1: string;

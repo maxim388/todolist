@@ -1,7 +1,5 @@
-//todolist change filter Completed - its wrong (empty)
 //updateTaskAC change title on every letters - fix (heaps request)
 // fix rename createTodolist - addTodolistTC (add|create)
-// COMPLETED task not show
 // fix CHANGE_TODOLIST_TITLE |CHANGE_TODOLIST_FILTER --> updateTOdolist
 //LinearProgress - fix подергиваний
 //demo -remove in code

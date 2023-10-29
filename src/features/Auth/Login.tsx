@@ -7,14 +7,15 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { login } from "./auth-reducer";
+import { useActions, useAppDispatch, useAppSelector } from "../../app/hooks";
+import { asyncActions } from "./auth-reducer";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "./selectors";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const { login } = useActions(asyncActions);
 
   const formik = useFormik({
     validate: (values) => {
