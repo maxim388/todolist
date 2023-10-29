@@ -1,5 +1,4 @@
 import {
-  FieldErrorType,
   TaskTypeAPI,
   TodoTaskPriority,
   TodoTaskStatus,
@@ -10,7 +9,7 @@ import {
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { setAppStatus } from "../../app/app-reducer";
-import { AppRootStateType } from "../../app/store";
+import { AppRootStateType, ThunkErrorType } from "../../app/store";
 import {
   AddTodolistType,
   RemoveTodolistType,
@@ -27,7 +26,7 @@ export type TodolistOfTasksType = {
 export const addTask = createAsyncThunk<
   TaskTypeAPI,
   { todolistId: string; taskTitle: string },
-  { rejectValue: { errors: string[]; fieldsErrors?: FieldErrorType[] } }
+  ThunkErrorType
 >("tasks/addTask", async (param, { dispatch, rejectWithValue }) => {
   const { todolistId, taskTitle } = param;
   try {
@@ -35,23 +34,12 @@ export const addTask = createAsyncThunk<
     const res = await todolistsAPI.createTask(todolistId, taskTitle);
     if (res.data.resultCode === 0) {
       dispatch(setAppStatus({ status: "succeeded" }));
-      return res.data.data.item ;
+      return res.data.data.item;
     } else {
-     handleServerAppError(res.data, dispatch, false);
-      return rejectWithValue({
-        errors: res.data.messages,
-        fieldsErrors: res.data.fieldsErrors,
-      });
+      return handleServerAppError(res.data, dispatch, rejectWithValue, false);
     }
   } catch (error) {
-    handleServerNetworkError(error, dispatch, false);
-    //fixme
-    let err = { errors: ["some error"], fieldsErrors: undefined };
-    if (error instanceof Error && error.message) {
-      return rejectWithValue({ ...err, errors: [error.message] });
-    } else {
-      return rejectWithValue(err);
-    }
+    return handleServerNetworkError(error, dispatch, rejectWithValue, false);
   }
 });
 
@@ -64,8 +52,7 @@ export const fetchTasks = createAsyncThunk(
       dispatch(setAppStatus({ status: "succeeded" }));
       return { todolistId: param.todolistId, tasks: res.data.items };
     } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
+      return handleServerNetworkError(error, dispatch, rejectWithValue);
     }
   }
 );
@@ -108,12 +95,10 @@ export const updateTask = createAsyncThunk(
         dispatch(setAppStatus({ status: "succeeded" }));
         return { todolistId, taskId, property: domainModel };
       } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue(null);
+        return handleServerAppError(res.data, dispatch, rejectWithValue);
       }
     } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
+      return handleServerNetworkError(error, dispatch, rejectWithValue);
     }
   }
 );
@@ -132,8 +117,7 @@ export const removeTask = createAsyncThunk(
       dispatch(setAppStatus({ status: "succeeded" }));
       return { todolistId, taskId };
     } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
+      return handleServerNetworkError(error, dispatch, rejectWithValue);
     }
   }
 );

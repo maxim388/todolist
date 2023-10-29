@@ -9,13 +9,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Box, CircularProgress, LinearProgress } from "@mui/material";
 import { useActions, useAppDispatch, useAppSelector } from "./hooks";
 import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
-import { TodolistsList } from "../features/TodolistsList";
+import { TodolistsList, todolistsActions } from "../features/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login, authActions } from "../features/Auth";
 import { initializeApp } from "./app-reducer";
 import { selectIsInitialized, selectStatus } from "./selectors";
 import { authSelectors } from "../features/Auth";
-import { addTodolist } from "../features/TodolistsList/todolists-reducer";
+import { AddItemFormSubmitHelperType } from "../components/AddItemForm/AddItemForm";
 
 export function App({ demo = true }) {
   const dispatch = useAppDispatch();
@@ -29,8 +29,19 @@ export function App({ demo = true }) {
   }, [dispatch]);
 
   const addTodoList = useCallback(
-    async (title: string) => {
-      dispatch(addTodolist({ todolistTitle: title }));
+    async (todolistTitle: string, helper?: AddItemFormSubmitHelperType) => {
+      const thunk = todolistsActions.addTodolist({ todolistTitle });
+      const resultAction = await dispatch(thunk);
+      if (todolistsActions.addTodolist.rejected.match(resultAction)) {
+        if (resultAction.payload?.errors.length) {
+          const errorMessage = resultAction.payload?.errors[0];
+          helper?.setError(errorMessage);
+        } else {
+          helper?.setError("Some error occured");
+        }
+      } else {
+        helper?.setTitle("");
+      }
     },
     [dispatch]
   );
@@ -80,10 +91,7 @@ export function App({ demo = true }) {
       </AppBar>
       <Container fixed>
         <Routes>
-          <Route
-            path={"/"}
-            element={<TodolistsList addTodoList={addTodoList} />}
-          />
+          <Route path={"/"} element={<TodolistsList addTodoList={addTodoList} />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/404"} element={<h1>404: PAGE NOT FOUND</h1>} />
           <Route path={"*"} element={<Navigate to="/404" />} />

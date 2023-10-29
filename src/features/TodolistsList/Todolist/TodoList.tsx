@@ -5,7 +5,10 @@ import Button from "@mui/material/Button";
 import { Delete } from "@mui/icons-material";
 import { Task } from "./Task/Task";
 import { FilterValuesType, TodolistDomainType } from "../todolists-reducer";
-import { AddItemForm } from "../../../components/AddItemForm/AddItemForm";
+import {
+  AddItemForm,
+  AddItemFormSubmitHelperType,
+} from "../../../components/AddItemForm/AddItemForm";
 import { TodoTaskStatus } from "../../../api/todolists-api";
 import { useActions, useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { tasksActions, todolistsActions } from "..";
@@ -18,7 +21,7 @@ export type TodolistPropsType = {
 export const Todolist: FC<TodolistPropsType> = memo(({ todolist, arrTitleFilter }) => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.tasks[todolist.id]);
-  const { addTask, fetchTasks } = useActions(tasksActions);
+  const { fetchTasks } = useActions(tasksActions);
   const { changeTodolistFilter, changeTodolistTitle, removeTodolist } =
     useActions(todolistsActions);
 
@@ -39,21 +42,21 @@ export const Todolist: FC<TodolistPropsType> = memo(({ todolist, arrTitleFilter 
   );
 
   const addItem = useCallback(
-    async (taskTitle: string) => {
+    async (taskTitle: string, helper?: AddItemFormSubmitHelperType) => {
       const thunk = tasksActions.addTask({ todolistId: todolist.id, taskTitle });
       const resultAction = await dispatch(thunk);
       if (tasksActions.addTask.rejected.match(resultAction)) {
-        debugger;
-        if (resultAction.payload!.errors.length) {
+        if (resultAction.payload?.errors.length) {
           const errorMessage = resultAction.payload?.errors[0];
-          throw new Error(errorMessage);
+          helper?.setError(errorMessage);
         } else {
-          throw new Error("Some error occured");
+          helper?.setError("Some error occured");
         }
+      } else {
+        helper?.setTitle("");
       }
-      // addTask({ todolistId: todolist.id, taskTitle });
     },
-    [dispatch, addTask, todolist.id]
+    [dispatch, todolist.id]
   );
 
   const changeFilter = useCallback(
@@ -80,8 +83,9 @@ export const Todolist: FC<TodolistPropsType> = memo(({ todolist, arrTitleFilter 
         <Button
           onClick={onRemoveTodolist}
           disabled={todolist.entityStatus === "loading"}
-          startIcon={<Delete />}
+          startIcon={<Delete fontSize={"small"}/>}
           style={{ position: "absolute", right: "5px", top: "-20px" }}
+          size={"small"}
         ></Button>
       </h3>
       <AddItemForm addItem={addItem} disabled={todolist.entityStatus === "loading"} />

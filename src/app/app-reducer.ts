@@ -1,9 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authAPI } from "../api/todolists-api";
-import {
-  handleServerAppError,
-  handleServerNetworkError,
-} from "../utils/error-utils";
+import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
 import { setIsLoggedIn } from "../features/Auth/auth-reducer";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
@@ -23,12 +20,11 @@ export const initializeApp = createAsyncThunk(
         // fixme return { isLoggedIn: true };
         dispatch(setIsLoggedIn({ isLoggedIn: true }));
       } else {
-        handleServerAppError(res.data, dispatch);
+        handleServerAppError(res.data, dispatch, rejectWithValue);
         return rejectWithValue(null);
       }
-      return;
     } catch (error) {
-      handleServerNetworkError(error, dispatch);
+      handleServerNetworkError(error, dispatch, rejectWithValue);
       return rejectWithValue(null);
     }
   }
@@ -46,10 +42,7 @@ const slice = createSlice({
     isInitialized: false,
   } as InitialStateType,
   reducers: {
-    setAppStatus(
-      stateDraft,
-      action: PayloadAction<{ status: RequestStatusType }>
-    ) {
+    setAppStatus(stateDraft, action: PayloadAction<{ status: RequestStatusType }>) {
       stateDraft.status = action.payload.status;
     },
     setAppError(stateDraft, action: PayloadAction<{ error: string | null }>) {

@@ -8,6 +8,7 @@ import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { ActionsType, appReducer } from "./app-reducer";
 import { AuthActionsType, authReducer } from "../features/Auth/auth-reducer";
 import { configureStore } from "@reduxjs/toolkit";
+import { FieldErrorType } from "../api/todolists-api";
 
 const rootReducer = combineReducers({
   todolists: todolistsReducer,
@@ -43,6 +44,8 @@ export type AppThunkType<ReturnType = void> = ThunkAction<
   unknown,
   AppActionsType
 >;
+
+export type ThunkErrorType = { rejectValue: { errors: string[]; fieldsErrors?: FieldErrorType[] } };
 
 // @ts-ignore
 window.store = store;

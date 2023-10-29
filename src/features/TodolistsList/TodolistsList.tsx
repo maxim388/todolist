@@ -9,6 +9,7 @@ import { selectIsLoggedIn } from "../Auth/selectors";
 import { todolistsActions } from ".";
 
 const arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
+
 type TodolistsListPropsType = {
   addTodoList: (title: string) => Promise<any>;
 };

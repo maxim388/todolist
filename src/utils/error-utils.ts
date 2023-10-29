@@ -10,6 +10,7 @@ import { ResponseType } from "../api/todolists-api";
 export const handleServerAppError = <T>(
   data: ResponseType<T>,
   dispatch: ErrorUtilsDispatchType,
+  rejectWithValue: any,
   showError = true
 ) => {
   if (showError) {
@@ -17,11 +18,13 @@ export const handleServerAppError = <T>(
     dispatch(setAppError({ error }));
   }
   dispatch(setAppStatus({ status: "failed" }));
+  return rejectWithValue({ errors: data.messages, fieldsErrors: data.fieldsErrors });
 };
 
 export const handleServerNetworkError = (
   error: unknown,
   dispatch: ErrorUtilsDispatchType,
+  rejectWithValue: any, //fixme
   showError = true
 ) => {
   if (showError) {
@@ -29,6 +32,12 @@ export const handleServerNetworkError = (
     dispatch(setAppError({ error: error.message }));
   }
   dispatch(setAppStatus({ status: "failed" }));
+  let err = { errors: ["some error"], fieldsErrors: undefined };
+  if (error instanceof Error && error.message) {
+    return rejectWithValue({ ...err, errors: [error.message] });
+  } else {
+    return rejectWithValue(err);
+  }
 };
 
 type ErrorUtilsDispatchType = Dispatch<SetAppStatusType | SetAppErrorType>;

@@ -3,8 +3,13 @@ import { ChangeEvent, FC, KeyboardEvent, memo, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { Button } from "@mui/material";
 
+export type AddItemFormSubmitHelperType = {
+  setError: (err: string) => void;
+  setTitle: (title: string) => void;
+};
+
 export type AddItemFormPropsType = {
-  addItem: (title: string) => Promise<any>;
+  addItem: (title: string, helper?: AddItemFormSubmitHelperType) => void;
   disabled?: boolean;
 };
 
@@ -18,20 +23,12 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ addItem, disabled }
   const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) setError(null);
     if (e.code === "Enter") {
-      addItem(title);
-      setTitle("");
+      addItem(title.trim(), { setError, setTitle });
     }
   };
-  const addTitleHandler = async () => {
+  const addTitleHandler = () => {
     if (title.trim() !== "") {
-      try {
-        await addItem(title.trim());
-        setTitle("");
-      } catch (err: any) {
-        setError(err.message);
-      }
-    } else {
-      setError("Title is required");
+      addItem(title.trim(), { setError, setTitle });
     }
   };
 
