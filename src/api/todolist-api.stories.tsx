@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { TodolistTypeAPI, todolistsAPI } from "./todolists-api";
+import { useEffect, useState } from "react";
+import { todolistsAPI } from "./todolists-api";
+import { TodolistAPIType } from "./types";
 
 export default {
   title: "API",
 };
 
 export const GetTodolists = () => {
-  const [state, setState] = useState<TodolistTypeAPI[] | null>(null);
+  const [state, setState] = useState<TodolistAPIType[] | null>(null);
   useEffect(() => {
     todolistsAPI.getTodolists().then((res) => {
       setState(res.data);
@@ -15,7 +16,7 @@ export const GetTodolists = () => {
   return <div>{JSON.stringify(state)}</div>;
 };
 export const CreateTodolist = () => {
-  const [state, setState] = useState<TodolistTypeAPI[] | null>(null);
+  const [state, setState] = useState<TodolistAPIType[] | null>(null);
   useEffect(() => {
     const title = "MAXIM TODOLIST"; //hard code
     todolistsAPI.createTodolist(title).then((res) => {
@@ -26,7 +27,7 @@ export const CreateTodolist = () => {
   return <div>{JSON.stringify(state)}</div>;
 };
 export const DeleteTodolist = () => {
-  const [state, setState] = useState<TodolistTypeAPI[] | null>(null);
+  const [state, setState] = useState<TodolistAPIType[] | null>(null);
   useEffect(() => {
     const todolistId = "c470ccfb-405d-42ec-8981-b1d3a5be4c76"; //hard code
     todolistsAPI.deleteTodolist(todolistId).then((res) => {
@@ -37,7 +38,7 @@ export const DeleteTodolist = () => {
   return <div>{JSON.stringify(state)}</div>;
 };
 export const UpdateTodolistTitle = () => {
-  const [state, setState] = useState<TodolistTypeAPI[] | null>(null);
+  const [state, setState] = useState<TodolistAPIType[] | null>(null);
   useEffect(() => {
     const todolistId = "c470ccfb-405d-42ec-8981-b1d3a5be4c76"; //hard code
     const title = "Maxim todolist111"; //hard code
@@ -48,7 +49,6 @@ export const UpdateTodolistTitle = () => {
 
   return <div>{JSON.stringify(state)}</div>;
 };
-
 export const GetTasks = () => {
   const [state, setState] = useState<any | null>(null);
   const [todolistId, setTodolistId] = useState<string>("");
@@ -130,7 +130,6 @@ export const DeleteTask = () => {
     </div>
   );
 };
-
 export const UpdateTask = () => {
   const [state, setState] = useState<any | null>(null);
   const [title, setTitle] = useState<string>("");

@@ -9,8 +9,8 @@ import {
   AddItemForm,
   AddItemFormSubmitHelperType,
 } from "../../../components/AddItemForm/AddItemForm";
-import { TodoTaskStatus } from "../../../api/todolists-api";
-import { useActions, useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { TodoTaskStatus } from "../../../api/types";
+import { useActions, useAppDispatch, useAppSelector } from "../../../utils/redux-utils";
 import { tasksActions, todolistsActions } from "..";
 
 export type TodolistPropsType = {

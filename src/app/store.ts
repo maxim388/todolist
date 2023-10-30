@@ -1,14 +1,13 @@
-import { combineReducers } from "redux";
-import { TasksActionsType, tasksReducer } from "../features/TodolistsList/tasks-reducer";
-import {
-  TodolistsActionsType,
-  todolistsReducer,
-} from "../features/TodolistsList/todolists-reducer";
+import { FieldErrorType } from './../api/types';
+import { TasksActionsType } from "../features/TodolistsList/tasks-reducer";
+import { TodolistsActionsType } from "../features/TodolistsList/todolists-reducer";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { ActionsType, appReducer } from "./app-reducer";
-import { AuthActionsType, authReducer } from "../features/Auth/auth-reducer";
-import { configureStore } from "@reduxjs/toolkit";
-import { FieldErrorType } from "../api/todolists-api";
+import { AppActionsType } from "../api/application-reducer";
+import { AuthActionsType } from "../features/Auth/auth-reducer";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { authReducer } from "../features/Auth";
+import { tasksReducer, todolistsReducer } from "../features/TodolistsList";
+import { appReducer } from "../api";
 
 const rootReducer = combineReducers({
   todolists: todolistsReducer,
@@ -19,33 +18,25 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(thunkMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware),
 });
-
 
 export type AppRootStateType = ReturnType<typeof store.getState>;
 
-export type AppDispatch = ThunkDispatch<
-  AppRootStateType,
-  unknown,
-  AppActionsType
->;
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, ActionsType>;
 
-export type AppActionsType =
-  | TodolistsActionsType
-  | TasksActionsType
-  | ActionsType
-  | AuthActionsType;
+type ActionsType = TodolistsActionsType | TasksActionsType | AppActionsType | AuthActionsType;
 
 export type AppThunkType<ReturnType = void> = ThunkAction<
   ReturnType,
   AppRootStateType,
   unknown,
-  AppActionsType
+  ActionsType
 >;
 
-export type ThunkErrorType = { rejectValue: { errors: string[]; fieldsErrors?: FieldErrorType[] } };
+export type ThunkErrorType = {
+  rejectValue: { errors: string[]; fieldsErrors?: FieldErrorType[] };
+};
 
 // @ts-ignore
 window.store = store;

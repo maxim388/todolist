@@ -1,8 +1,8 @@
 import { FC, useEffect } from "react";
 import { FilterValuesType } from "./todolists-reducer";
-import { useActions, useAppSelector } from "../../app/hooks";
+import { useActions, useAppSelector } from "../../utils/redux-utils";
 import { Grid, Paper } from "@mui/material";
-import { Todolist } from "./Todolist/TodoList";
+import { Todolist } from "./Todolist/Todolist";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import { Navigate } from "react-router-dom";
 import { selectIsLoggedIn } from "../Auth/selectors";
@@ -11,10 +11,10 @@ import { todolistsActions } from ".";
 const arrTitleFilter: FilterValuesType[] = ["All", "Active", "Completed"];
 
 type TodolistsListPropsType = {
-  addTodoList: (title: string) => Promise<any>;
+  addTodolist: (title: string) => Promise<any>;
 };
 
-export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodoList }) => {
+export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodolist }) => {
   const todolists = useAppSelector((state) => state.todolists);
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const { fetchTodolists } = useActions(todolistsActions);
@@ -30,7 +30,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = ({ addTodoList }) => {
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
-        <AddItemForm addItem={addTodoList} />
+        <AddItemForm addItem={addTodolist} />
       </Grid>
       {/* fixme: style={{flexWrap: "nowrap", overflowX: "scroll"}}  */}
       <Grid

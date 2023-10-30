@@ -5,29 +5,29 @@ export type EditableSpanPropsType = {
   title: string;
   onChange: (newValue: string) => void;
 };
-export const EditableSpan: FC<EditableSpanPropsType> = memo((restProps) => {
+export const EditableSpan: FC<EditableSpanPropsType> = memo(({ title, onChange }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("");
+  const [titleField, setTitleField] = useState<string>("");
   const activeEditMode = () => {
     setEditMode(true);
-    setTitle(restProps.title);
+    setTitleField(title);
   };
   const activeViewMode = () => {
-    restProps.onChange(title);
+    onChange(titleField);
     setEditMode(false);
   };
   const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.currentTarget.value);
+    setTitleField(e.currentTarget.value);
   };
 
   return editMode ? (
     <TextField
-      value={title}
+      value={titleField}
       onBlur={activeViewMode}
       autoFocus
       onChange={onChangeTitleHandler}
     />
   ) : (
-    <span onDoubleClick={activeEditMode}>{restProps.title}</span>
+    <span onDoubleClick={activeEditMode}>{title}</span>
   );
 });

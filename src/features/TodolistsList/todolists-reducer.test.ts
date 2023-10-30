@@ -1,16 +1,16 @@
-import { RequestStatusType } from "../../app/app-reducer";
-import {
-  FilterValuesType,
-  TodolistDomainType,
+import { todolistsActions, todolistsReducer } from ".";
+import { RequestStatusType } from "../../api/application-reducer";
+import { FilterValuesType, TodolistDomainType } from "./todolists-reducer";
+import { v1 } from "uuid";
+
+const {
   addTodolist,
   changeTodolistEntityStatus,
   changeTodolistFilter,
   changeTodolistTitle,
   fetchTodolists,
   removeTodolist,
-  todolistsReducer,
-} from "./todolists-reducer";
-import { v1 } from "uuid";
+} = todolistsActions;
 
 let todolistId1: string;
 let todolistId2: string;
@@ -42,10 +42,7 @@ beforeEach(() => {
 test("correct todolist should be removed", () => {
   const param = { todolistId: todolistId1 };
   const meta = param;
-  const endState = todolistsReducer(
-    startState,
-    removeTodolist.fulfilled(param, "", meta)
-  );
+  const endState = todolistsReducer(startState, removeTodolist.fulfilled(param, "", meta));
 
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
@@ -61,10 +58,7 @@ test("correct todolist should be added", () => {
     },
   };
   const meta = { todolistTitle: param.todolist.title };
-  const endState = todolistsReducer(
-    startState,
-    addTodolist.fulfilled(param, "", meta)
-  );
+  const endState = todolistsReducer(startState, addTodolist.fulfilled(param, "", meta));
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(param.todolist.title);
@@ -110,7 +104,7 @@ test("correct entity status of todolist should be changed", () => {
 });
 
 test("todolists schould be set to the state", () => {
-  const action = fetchTodolists.fulfilled({ todolists: startState }, "");
+  const action = fetchTodolists.fulfilled({ todolists: startState }, "", undefined);
 
   const endState = todolistsReducer(startState, action);
 

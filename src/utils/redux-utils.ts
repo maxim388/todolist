@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
-import { AppDispatch, AppRootStateType } from "./store";
+import { AppDispatch, AppRootStateType } from "../app/store";
 import { ActionCreatorsMapObject, bindActionCreators } from "redux";
 import { useMemo } from "react";
 
@@ -12,7 +12,7 @@ export function useActions<T extends ActionCreatorsMapObject<any>>(actions: T) {
 
   const boundActions = useMemo(() => {
     return bindActionCreators(actions, dispatch);
-  }, []);
+  }, [dispatch, actions]);
 
   return boundActions;
 }

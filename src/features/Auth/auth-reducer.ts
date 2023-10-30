@@ -1,10 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoginParamsType, authAPI } from "../../api/todolists-api";
+import { LoginParamsType } from "../../api/types";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
-import { setAppStatus } from "../../app/app-reducer";
 import { ThunkErrorType } from "../../app/store";
+import { authAPI } from "../../api/todolists-api";
+import { setAppStatus } from "../../api/application-reducer";
 
-export const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>(
+//bug circular dependencies "const { setAppStatus } = appActions"
+
+const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>(
   "auth/login",
   async (param, { dispatch, rejectWithValue }) => {
     const { email, password, rememberMe } = param;
@@ -23,7 +26,7 @@ export const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType
   }
 );
 
-export const logout = createAsyncThunk(
+const logout = createAsyncThunk<{ isLoggedIn: boolean }, undefined, ThunkErrorType>(
   "auth/logout",
   async (param, { dispatch, rejectWithValue }) => {
     try {
@@ -46,7 +49,7 @@ export const asyncActions = {
   logout,
 };
 
-export const slice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState: { isLoggedIn: false },
   reducers: {
@@ -64,9 +67,6 @@ export const slice = createSlice({
   },
 });
 
-export const authReducer = slice.reducer;
-export const { setIsLoggedIn } = slice.actions;
+export const { setIsLoggedIn } = authSlice.actions;
 
-export type AuthActionsType = SetIsLoggedInType;
-
-export type SetIsLoggedInType = ReturnType<typeof setIsLoggedIn>;
+export type AuthActionsType = ReturnType<typeof setIsLoggedIn>;

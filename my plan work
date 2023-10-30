@@ -1,3 +1,4 @@
+//fix type re-export app tasks todolists namespace
 //updateTaskAC change title on every letters - fix (heaps request)
 // fix rename createTodolist - addTodolistTC (add|create)
 // fix CHANGE_TODOLIST_TITLE |CHANGE_TODOLIST_FILTER --> updateTOdolist
@@ -6,6 +7,7 @@
 //handleServerAppError -use to
 //fix storybook stories App BrowserRouter HashRouter
 //fix rename createTodolist - addTodolistTC (add|create)
+
 
 Добавьте обработку ошибок во всех санках
 По аналогии с пунктом 8 добавьте возможность задизейблить EditableSpan, чтобы когда disabled=true, он не мог перейти в состояние editable

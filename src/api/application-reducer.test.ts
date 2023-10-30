@@ -1,9 +1,9 @@
+import { appReducer, appActions } from "./index";
 import {
   InitialStateType,
-  appReducer,
-  setAppError,
-  setAppStatus,
-} from "./app-reducer";
+} from "./application-reducer";
+
+const { setAppStatus, setAppError } = appActions;
 
 let startState: InitialStateType;
 

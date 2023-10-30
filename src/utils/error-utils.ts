@@ -1,16 +1,17 @@
 import { Dispatch } from "redux";
 import {
-  SetAppErrorType,
-  SetAppStatusType,
+  AppActionsType,
   setAppError,
   setAppStatus,
-} from "../app/app-reducer";
-import { ResponseType } from "../api/todolists-api";
+} from "../api/application-reducer";
+import { ResponseType } from "../api/types";
+
+type ErrorUtilsDispatchType = Dispatch<AppActionsType>;
 
 export const handleServerAppError = <T>(
   data: ResponseType<T>,
   dispatch: ErrorUtilsDispatchType,
-  rejectWithValue: any,
+  rejectWithValue: Function,
   showError = true
 ) => {
   if (showError) {
@@ -24,7 +25,7 @@ export const handleServerAppError = <T>(
 export const handleServerNetworkError = (
   error: unknown,
   dispatch: ErrorUtilsDispatchType,
-  rejectWithValue: any, //fixme
+  rejectWithValue: Function,
   showError = true
 ) => {
   if (showError) {
@@ -40,4 +41,4 @@ export const handleServerNetworkError = (
   }
 };
 
-type ErrorUtilsDispatchType = Dispatch<SetAppStatusType | SetAppErrorType>;
+

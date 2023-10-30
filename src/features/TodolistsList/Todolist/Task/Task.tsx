@@ -3,13 +3,13 @@ import { EditableSpan } from "../../../../components/EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { Delete } from "@mui/icons-material";
-import { TaskTypeAPI } from "../../../../api/todolists-api";
-import { useActions } from "../../../../app/hooks";
+import { TaskAPIType } from "../../../../api/types";
+import { useActions } from "../../../../utils/redux-utils";
 import { tasksActions } from "../..";
 
 export type TaskPropsType = {
   todolistId: string;
-  task: TaskTypeAPI;
+  task: TaskAPIType;
 };
 
 export const Task: FC<TaskPropsType> = memo(({ todolistId, task }) => {

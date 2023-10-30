@@ -1,7 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authAPI } from "../api/todolists-api";
+import { authAPI } from "./todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
-import { setIsLoggedIn } from "../features/Auth/auth-reducer";
+import { authActions } from "../features/Auth";
+import { ThunkErrorType } from "../app/store";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -11,21 +12,21 @@ export type InitialStateType = {
   isInitialized: boolean;
 };
 
-export const initializeApp = createAsyncThunk(
+const { setIsLoggedIn } = authActions;
+
+const initializeApp = createAsyncThunk<{ isLoggedIn: boolean }, undefined, ThunkErrorType>(
   "app/initializeApp",
   async (param, { dispatch, rejectWithValue }) => {
     try {
       const res = await authAPI.me();
       if (res.data.resultCode === 0) {
-        // fixme return { isLoggedIn: true };
         dispatch(setIsLoggedIn({ isLoggedIn: true }));
+        return { isLoggedIn: true };
       } else {
-        handleServerAppError(res.data, dispatch, rejectWithValue);
-        return rejectWithValue(null);
+        return handleServerAppError(res.data, dispatch, rejectWithValue);
       }
     } catch (error) {
-      handleServerNetworkError(error, dispatch, rejectWithValue);
-      return rejectWithValue(null);
+      return handleServerNetworkError(error, dispatch, rejectWithValue);
     }
   }
 );
@@ -34,7 +35,7 @@ export const asyncActions = {
   initializeApp,
 };
 
-const slice = createSlice({
+export const appSlice = createSlice({
   name: "app",
   initialState: {
     status: "idle",
@@ -56,10 +57,6 @@ const slice = createSlice({
   },
 });
 
-export const appReducer = slice.reducer;
-export const { setAppStatus, setAppError } = slice.actions;
+export const { setAppStatus, setAppError } = appSlice.actions;
 
-export type ActionsType = SetAppStatusType | SetAppErrorType;
-
-export type SetAppStatusType = ReturnType<typeof setAppStatus>;
-export type SetAppErrorType = ReturnType<typeof setAppError>;
+export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>;

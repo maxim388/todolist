@@ -1,18 +1,9 @@
-import {
-  TodolistOfTasksType,
-  addTask,
-  fetchTasks,
-  removeTask,
-  tasksReducer,
-  updateTask,
-} from "./tasks-reducer";
-import { TodoTaskPriority, TodoTaskStatus } from "../../api/todolists-api";
-import {
-  addTodolist,
-  fetchTodolists,
-  removeTodolist,
-} from "./todolists-reducer";
+import { TodolistOfTasksType } from "./tasks-reducer";
+import { TodoTaskPriority, TodoTaskStatus } from "../../api/types";
+import { addTodolist, fetchTodolists, removeTodolist } from "./todolists-reducer";
+import { tasksActions, tasksReducer } from ".";
 
+const { addTask, fetchTasks, removeTask, updateTask } = tasksActions;
 let startState: TodolistOfTasksType;
 
 beforeEach(() => {
@@ -278,7 +269,7 @@ test("empty arrays should be added when we set todolists", () => {
       },
     ],
   };
-  const action = fetchTodolists.fulfilled(param, "");
+  const action = fetchTodolists.fulfilled(param, "", undefined);
 
   const endState = tasksReducer({}, action);
 
