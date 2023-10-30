@@ -1,10 +1,8 @@
 import { Dispatch } from "redux";
-import {
-  AppActionsType,
-  setAppError,
-  setAppStatus,
-} from "../api/application-reducer";
 import { ResponseType } from "../api/types";
+import { AppActionsType, commonActions } from "../features/common-actions/app";
+
+const { setAppError, setAppStatus } = commonActions;
 
 type ErrorUtilsDispatchType = Dispatch<AppActionsType>;
 
@@ -40,5 +38,3 @@ export const handleServerNetworkError = (
     return rejectWithValue(err);
   }
 };
-
-

@@ -1,11 +1,11 @@
 import { handleServerAppError } from "./../../utils/error-utils";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { todolistsAPI } from "../../api/todolists-api";
-import { RequestStatusType } from "../../api/application-reducer";
+import { RequestStatusType } from "../Application/application-reducer";
 import { handleServerNetworkError } from "../../utils/error-utils";
 import { ThunkErrorType } from "../../app/store";
-import { appActions } from "../../api";
 import { TodolistAPIType } from "../../api/types";
+import { commonActions } from "../common-actions/app";
 
 export type FilterValuesType = "All" | "Active" | "Completed";
 
@@ -14,7 +14,7 @@ export type TodolistDomainType = TodolistAPIType & {
   entityStatus: RequestStatusType;
 };
 
-const { setAppStatus } = appActions;
+const { setAppStatus } = commonActions;
 
 export const addTodolist = createAsyncThunk<
   { todolist: TodolistAPIType },

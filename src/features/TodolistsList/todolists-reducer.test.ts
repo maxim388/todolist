@@ -1,5 +1,5 @@
 import { todolistsActions, todolistsReducer } from ".";
-import { RequestStatusType } from "../../api/application-reducer";
+import { RequestStatusType } from "../Application/application-reducer";
 import { FilterValuesType, TodolistDomainType } from "./todolists-reducer";
 import { v1 } from "uuid";
 

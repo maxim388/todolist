@@ -1,7 +1,6 @@
 import { todolistsAPI } from "../../api/todolists-api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
-import { appActions } from "../../api";
 import { AppRootStateType, ThunkErrorType } from "../../app/store";
 import {
   AddTodolistType,
@@ -18,12 +17,15 @@ import {
   TodolistAPIType,
   UpdateTaskModelType,
 } from "../../api/types";
+import { commonActions } from "../common-actions/app";
+// import { todolistsActions } from ".";
 
 export type TodolistOfTasksType = {
   [key: string]: TaskAPIType[];
 };
 
-const { setAppStatus } = appActions;
+const { setAppStatus } = commonActions;
+// const { addTodolist, fetchTodolists, removeTodolist } = todolistsActions;
 
 export const addTask = createAsyncThunk<
   TaskAPIType,

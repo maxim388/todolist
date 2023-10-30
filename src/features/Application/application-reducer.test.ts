@@ -1,9 +1,8 @@
-import { appReducer, appActions } from "./index";
-import {
-  InitialStateType,
-} from "./application-reducer";
+import { appReducer } from "./";
+import { InitialStateType } from "./application-reducer";
+import { commonActions } from "../common-actions/app";
 
-const { setAppStatus, setAppError } = appActions;
+const { setAppStatus, setAppError } = commonActions;
 
 let startState: InitialStateType;
 
@@ -16,10 +15,7 @@ beforeEach(() => {
 });
 
 test("correct error message should be set", () => {
-  const endState = appReducer(
-    startState,
-    setAppError({ error: "some error" })
-  );
+  const endState = appReducer(startState, setAppError({ error: "some error" }));
   expect(endState.error).toBe("some error");
 });
 

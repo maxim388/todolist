@@ -1,9 +1,10 @@
 import { TodolistOfTasksType } from "./tasks-reducer";
 import { TodoTaskPriority, TodoTaskStatus } from "../../api/types";
-import { addTodolist, fetchTodolists, removeTodolist } from "./todolists-reducer";
-import { tasksActions, tasksReducer } from ".";
+import { tasksActions, tasksReducer, todolistsActions } from ".";
 
 const { addTask, fetchTasks, removeTask, updateTask } = tasksActions;
+const { addTodolist, fetchTodolists, removeTodolist } = todolistsActions;
+
 let startState: TodolistOfTasksType;
 
 beforeEach(() => {

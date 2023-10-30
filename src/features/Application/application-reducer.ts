@@ -1,9 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authAPI } from "./todolists-api";
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
-import { authActions } from "../features/Auth";
-import { ThunkErrorType } from "../app/store";
+import { authAPI } from "../../api/todolists-api";
+import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import { authActions } from "../Auth";
+import { ThunkErrorType } from "../../app/store";
+import { commonActions } from "../common-actions/app";
 
+const { setAppError, setAppStatus } = commonActions;
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 export type InitialStateType = {
@@ -42,21 +44,18 @@ export const appSlice = createSlice({
     error: null,
     isInitialized: false,
   } as InitialStateType,
-  reducers: {
-    setAppStatus(stateDraft, action: PayloadAction<{ status: RequestStatusType }>) {
-      stateDraft.status = action.payload.status;
-    },
-    setAppError(stateDraft, action: PayloadAction<{ error: string | null }>) {
-      stateDraft.error = action.payload.error;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(setAppStatus, (stateDraft, action) => {
+      stateDraft.status = action.payload.status;
+    });
+    builder.addCase(setAppError, (stateDraft, action) => {
+      stateDraft.error = action.payload.error;
+    });
     builder.addCase(initializeApp.fulfilled, (stateDraft, action) => {
       stateDraft.isInitialized = true;
     });
   },
 });
 
-export const { setAppStatus, setAppError } = appSlice.actions;
-
-export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>;
+// export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>;

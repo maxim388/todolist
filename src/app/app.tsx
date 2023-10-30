@@ -12,8 +12,8 @@ import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
 import { TodolistsList, todolistsActions } from "../features/TodolistsList";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login, authActions } from "../features/Auth";
-import { appActions } from "../api";
-import { appSelectors } from "../api";
+import { appActions } from "../features/Application";
+import { appSelectors } from "../features/Application";
 import { authSelectors } from "../features/Auth";
 import { AddItemFormSubmitHelperType } from "../components/AddItemForm/AddItemForm";
 

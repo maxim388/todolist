@@ -6,7 +6,7 @@ import { tasksReducer } from "../features/TodolistsList/";
 import { todolistsReducer } from "../features/TodolistsList/";
 import { AppRootStateType } from "../app/store";
 import { TodoTaskPriority, TodoTaskStatus } from "../api/types";
-import { appReducer } from "../api";
+import { appReducer } from "../features/Application";
 import thunkMiddleware from "redux-thunk";
 import { authReducer } from "../features/Auth/";
 import { configureStore } from "@reduxjs/toolkit";

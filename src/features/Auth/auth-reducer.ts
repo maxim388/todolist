@@ -3,9 +3,9 @@ import { LoginParamsType } from "../../api/types";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { ThunkErrorType } from "../../app/store";
 import { authAPI } from "../../api/todolists-api";
-import { setAppStatus } from "../../api/application-reducer";
+import { commonActions } from "../common-actions/app";
 
-//bug circular dependencies "const { setAppStatus } = appActions"
+const { setAppStatus } = commonActions
 
 const login = createAsyncThunk<undefined, LoginParamsType, ThunkErrorType>(
   "auth/login",
